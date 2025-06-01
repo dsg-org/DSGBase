@@ -1,0 +1,88 @@
+.TH DSGBase 1 "June 2025" "v1.0" "User Binary Tool Manual"
+.SH NAME
+DSGBase \- convert and query user data in JSON and binary formats
+.SH SYNOPSIS
+.B DSGBase
+[\fB-b\fR \fIFILE\fR] [\fB-f\fR \fIFILE\fR] [\fB-i\fR \fIID\fR] [\fB-n\fR \fINAME\fR] [\fB-s\fR \fISURNAME\fR] [\fB-r\fR \fIREGION\fR]
+.SH DESCRIPTION
+.B DSGBase
+is a command-line tool for managing user data from JSON files. It can convert a JSON file to a binary format or search users by name, surname, ID, or region from a binary dataset.
+
+The JSON input is expected to use the following keys for user objects:
+.IP \[bu] 2
+\fBsaxeli\fR – First name
+.IP \[bu]
+\fBgvari\fR – Surname
+.IP \[bu]
+\fBpiadi\fR – User ID (string form of integer)
+.IP \[bu]
+\fBraioni\fR – Region
+
+The binary output is written to \fBoutput.bin\fR by default.
+
+.SH OPTIONS
+.TP
+.BR -b " " \fIFILE\fR
+Convert the JSON file \fIFILE\fR to binary format. Output will be saved as \fBoutput.bin\fR. This flag is mutually exclusive with other flags.
+
+.TP
+.BR -f " " \fIFILE\fR
+Load binary user data from \fIFILE\fR. Required before any search operation.
+
+.TP
+.BR -i " " \fIID\fR
+Search for a user by integer ID.
+
+.TP
+.BR -n " " \fINAME\fR
+Search for users by name (first name / saxeli).
+
+.TP
+.BR -s " " \fISURNAME\fR
+Search for users by surname (gvari).
+
+.TP
+.BR -r " " \fIREGION\fR
+Search for users by region (raioni).
+
+.SH EXAMPLES
+.TP
+Convert JSON to binary:
+.B
+userbin -b users.json
+
+.TP
+Load binary file and search by ID:
+.B
+userbin -f output.bin -i 101
+
+.TP
+Load and search by name and region:
+.B
+userbin -f output.bin -n Giorgi -r Tbilisi
+
+.SH RETURN VALUE
+Returns 0 on success, non-zero on failure. Error messages are printed to stderr.
+
+.SH FILES
+.TP
+.B output.bin
+The default output file for binary data after conversion.
+
+.SH DEPENDENCIES
+Requires the following libraries:
+.IP \[bu] 2
+libcjson
+.IP \[bu]
+uthash
+
+.SH BUGS
+Does not support searching by partial name or case-insensitive matches. No support for combining multiple search terms (e.g., name and surname together).
+
+.SH AUTHOR
+Written by Gurjaka.
+
+.SH SEE ALSO
+.BR jq (1),
+.BR cjson (3),
+.BR uthash (3)
