@@ -9,7 +9,7 @@
 
 typedef struct
 {
-    int32_t id;
+    int64_t id;
     char name[MAX_STR_LEN];
     char surname[MAX_STR_LEN];
     char region[MAX_STR_LEN];
@@ -18,7 +18,7 @@ typedef struct
 
 typedef struct data
 {
-    int id;     // Person's ID
+    int64_t id; // Person's ID
     char* name; // Person's name
     char* surname;
     char* region;
@@ -33,7 +33,7 @@ typedef struct user
     char* name;
     char* surname;
     char* region;
-    int id;
+    int64_t id;
     bool id_set;
 } User;
 
@@ -41,12 +41,13 @@ void trim_and_copy(char*, const char*);
 void convert_to_bin(char*);
 void print_progress(int, int);
 void load_users_from_json(const char*);
-void add_user(const int, const char*, const char*, const char*);
-Data* find_by_id(int);
+void add_user(const int64_t, const char*, const char*, const char*);
+Data* find_by_id(int64_t);
 void search_users_by_name(const char* name);
 void search_users_by_surname(const char* surname);
 void search_users_by_region(const char* region);
 void search_users(const User*);
+void cleanup_hash_table(void);
 
 int bflag = 0;
 int fflag = 0;
@@ -150,7 +151,7 @@ int main(int argc, char* argv[])
                     if (i < argc)
                     {
                         iflag = 1;
-                        s->id = atoi(argv[i]);
+                        s->id = strtoll(argv[i], NULL, 10);
                         s->id_set = true;
                     }
                     break;
@@ -215,6 +216,10 @@ cleanup:
             free(p->in);
         free(p);
     }
+
+    // Clean up the hash table
+    cleanup_hash_table();
+
     return EXIT_SUCCESS;
 }
 
@@ -286,7 +291,7 @@ void convert_to_bin(char* fname)
             user = user->next;
             continue;
         }
-        int32_t user_id = atoi(id->valuestring);
+        int64_t user_id = strtoll(id->valuestring, NULL, 10);
 
         PackedUser p;
         p.id = user_id;
@@ -339,19 +344,22 @@ void load_users_from_json(const char* filename)
     }
 
     PackedUser p;
+    int count = 0;
     while (fread(&p, sizeof(PackedUser), 1, fp) == 1)
     {
         add_user(p.id, p.name, p.surname, p.region);
+        count++;
     }
 
+    printf("Loaded %d users from binary file.\n", count);
     fclose(fp);
-};
+}
 
-void add_user(const int id, const char* name, const char* surname, const char* region)
+void add_user(const int64_t id, const char* name, const char* surname, const char* region)
 {
     Data* s;
 
-    HASH_FIND_INT(person, &id, s);
+    HASH_FIND(hh, person, &id, sizeof(int64_t), s);
     if (s == NULL)
     {
         s = malloc(sizeof *s);
@@ -363,7 +371,7 @@ void add_user(const int id, const char* name, const char* surname, const char* r
         s->name = s->surname = s->region = NULL;
         s->id = id;
 
-        HASH_ADD_INT(person, id, s); /* id: name of key field */
+        HASH_ADD(hh, person, id, sizeof(int64_t), s); /* id: name of key field */
     }
     else
     {
@@ -395,6 +403,8 @@ cleanup:
 void search_users(const User* filters)
 {
     Data *current, *tmp;
+    int found_count = 0;
+
     HASH_ITER(hh, person, current, tmp)
     {
         bool match = true;
@@ -410,10 +420,26 @@ void search_users(const User* filters)
 
         if (match)
         {
-            printf("ID: %d\n", current->id);
+            printf("ID: %lld\n", (long long) current->id);
             printf("Name: %s\n", current->name);
             printf("Surname: %s\n", current->surname);
             printf("Region: %s\n\n", current->region);
+            found_count++;
         }
+    }
+
+    printf("Found %d matching users.\n", found_count);
+}
+
+void cleanup_hash_table(void)
+{
+    Data *current, *tmp;
+    HASH_ITER(hh, person, current, tmp)
+    {
+        HASH_DEL(person, current);
+        free(current->name);
+        free(current->surname);
+        free(current->region);
+        free(current);
     }
 }
