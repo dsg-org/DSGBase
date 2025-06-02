@@ -46,6 +46,7 @@ Data* find_by_id(int);
 void search_users_by_name(const char* name);
 void search_users_by_surname(const char* surname);
 void search_users_by_region(const char* region);
+void search_users(const User*);
 
 int bflag = 0;
 int fflag = 0;
@@ -58,7 +59,16 @@ int main(int argc, char* argv[])
 {
     if (argc == 1)
     {
-        fprintf(stderr, "No file flag passed.\n");
+        // If no search flags are provided, show usage
+        fprintf(stderr, "Usage: %s [OPTIONS]\n", argv[0]);
+        fprintf(stderr, "Options:\n");
+        fprintf(stderr, "  -b <json_file>    Convert JSON file to binary\n");
+        fprintf(stderr, "  -f <binary_file>  Specify binary file to search\n");
+        fprintf(stderr, "  -n <name>         Search by name\n");
+        fprintf(stderr, "  -s <surname>      Search by surname\n");
+        fprintf(stderr, "  -i <id>           Search by ID\n");
+        fprintf(stderr, "  -r <region>       Search by region\n");
+
         return EXIT_FAILURE;
     }
 
@@ -174,47 +184,22 @@ int main(int argc, char* argv[])
         goto cleanup;
     }
 
-    if (fflag)
+    if (nflag || sflag || iflag || rflag)
     {
-        puts("Reading data from json.");
-        load_users_from_json(s->fname);
-        puts("Successfully loaded data from json.\n");
-    }
-
-    if (iflag)
-    {
-        puts("Searching for user by ID...\n");
-        Data* found = find_by_id(s->id);
-        if (found)
+        // Load the binary file if filename is provided
+        if (fflag && s->fname)
         {
-            printf("Name: %s\nSurname: %s\nID: %d\nRegion: %s\n",
-                   found->name,
-                   found->surname,
-                   found->id,
-                   found->region);
+            printf("Loading users from binary file: %s\n", s->fname);
+            load_users_from_json(s->fname);
         }
         else
         {
-            printf("User with ID %d not found.\n", s->id);
+            fprintf(stderr, "Error: No binary file specified with -f flag for searching.\n");
+            goto cleanup;
         }
-        goto cleanup;
-    }
 
-    if (nflag)
-    {
-        search_users_by_name(s->name);
-        goto cleanup;
-    }
-
-    if (sflag)
-    {
-        search_users_by_surname(s->surname);
-        goto cleanup;
-    }
-
-    if (rflag)
-    {
-        search_users_by_region(s->region);
+        puts("Performing filtered search...\n");
+        search_users(s);
         goto cleanup;
     }
 
@@ -407,76 +392,28 @@ cleanup:
     exit(EXIT_FAILURE);
 }
 
-Data* find_by_id(int id)
+void search_users(const User* filters)
 {
-    Data* s;
-
-    HASH_FIND_INT(person, &id, s); /* s: output pointer */
-    return s;
-}
-
-void search_users_by_name(const char* name)
-{
-    Data *s, *tmp;
-    int found = 0;
-
-    puts("Searching for user by Name...\n");
-
-    HASH_ITER(hh, person, s, tmp)
+    Data *current, *tmp;
+    HASH_ITER(hh, person, current, tmp)
     {
-        if (strcmp(s->name, name) == 0)
+        bool match = true;
+
+        if (filters->id_set && current->id != filters->id)
+            match = false;
+        if (filters->name && strcmp(current->name, filters->name) != 0)
+            match = false;
+        if (filters->surname && strcmp(current->surname, filters->surname) != 0)
+            match = false;
+        if (filters->region && strcmp(current->region, filters->region) != 0)
+            match = false;
+
+        if (match)
         {
-            printf("ID: %d\nName: %s\nSurname: %s\nRegion: %s\n\n", s->id, s->name, s->surname, s->region);
-            found++;
+            printf("ID: %d\n", current->id);
+            printf("Name: %s\n", current->name);
+            printf("Surname: %s\n", current->surname);
+            printf("Region: %s\n\n", current->region);
         }
-    }
-
-    if (found == 0)
-    {
-        printf("No users found in Name: %s\n", name);
-    }
-}
-
-void search_users_by_surname(const char* surname)
-{
-    Data *s, *tmp;
-    int found = 0;
-
-    puts("Searching for user by Surname...\n");
-
-    HASH_ITER(hh, person, s, tmp)
-    {
-        if (strcmp(s->surname, surname) == 0)
-        {
-            printf("ID: %d\nName: %s\nSurname: %s\nRegion: %s\n\n", s->id, s->name, s->surname, s->region);
-            found++;
-        }
-    }
-
-    if (found == 0)
-    {
-        printf("No users found in Surname: %s\n", surname);
-    }
-}
-
-void search_users_by_region(const char* region)
-{
-    Data *s, *tmp;
-    int found = 0;
-
-    puts("Searching for user by Region...\n");
-
-    HASH_ITER(hh, person, s, tmp)
-    {
-        if (strcmp(s->region, region) == 0)
-        {
-            printf("ID: %d\nName: %s\nSurname: %s\nRegion: %s\n\n", s->id, s->name, s->surname, s->region);
-            found++;
-        }
-    }
-
-    if (found == 0)
-    {
-        printf("No users found in Region: %s\n", region);
     }
 }
