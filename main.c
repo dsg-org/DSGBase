@@ -200,7 +200,9 @@ int main(int argc, char* argv[])
         }
 
         puts("Performing filtered search...\n");
+        puts("[");
         search_users(s);
+        puts("]");
         goto cleanup;
     }
 
@@ -420,15 +422,17 @@ void search_users(const User* filters)
 
         if (match)
         {
-            printf("ID: %lld\n", (long long) current->id);
-            printf("Name: %s\n", current->name);
-            printf("Surname: %s\n", current->surname);
-            printf("Region: %s\n\n", current->region);
+            puts("  {");
+            printf("    \"id\": \"%lld\",\n", (long long) current->id);
+            printf("    \"name\": \"%s\",\n", current->name);
+            printf("    \"surname\": \"%s\",\n", current->surname);
+            printf("    \"region\": \"%s\",\n", current->region);
+            puts("  },");
             found_count++;
         }
     }
 
-    printf("Found %d matching users.\n", found_count);
+    // printf("Found %d matching users.\n", found_count);
 }
 
 void cleanup_hash_table(void)
