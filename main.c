@@ -422,17 +422,19 @@ void search_users(const User* filters)
 
         if (match)
         {
-            puts("  {");
+            if (found_count > 0)
+                puts(",");
+            printf("  {\n");
             printf("    \"id\": \"%lld\",\n", (long long) current->id);
             printf("    \"name\": \"%s\",\n", current->name);
             printf("    \"surname\": \"%s\",\n", current->surname);
-            printf("    \"region\": \"%s\",\n", current->region);
-            puts("  },");
+            printf("    \"region\": \"%s\" \n", current->region);
+            printf("  }");
             found_count++;
         }
-    }
 
-    // printf("Found %d matching users.\n", found_count);
+        // printf("Found %d matching users.\n", found_count);
+    }
 }
 
 void cleanup_hash_table(void)
