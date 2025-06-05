@@ -7,9 +7,11 @@ import threading
 app = Flask(__name__)
 process_lock = threading.Lock()
 
+
 @app.route("/")
 def index():
     return render_template("index.html")
+
 
 @app.route("/api/search", methods=["POST"])
 def api_search():
@@ -28,13 +30,13 @@ def api_search():
 
     args = [binary_path, "-f", data_path]
     if "name" in data:
-        args += ["-n", data["name"]]
+        args += ["-n", data["name"].lower()]
     if "surname" in data:
-        args += ["-s", data["surname"]]
+        args += ["-s", data["surname"].lower()]
     if "id" in data:
         args += ["-i", data["id"]]
     if "region" in data:
-        args += ["-r", data["region"]]
+        args += ["-r", data["region"].lower()]
 
     try:
         result = subprocess.run(args, capture_output=True, text=True, timeout=300)
@@ -58,6 +60,7 @@ def api_search():
 
     finally:
         process_lock.release()
+
 
 if __name__ == "__main__":
     app.run(debug=True)
