@@ -18,11 +18,19 @@
     formatter = forAllSystems (pkgs: pkgs.alejandra);
 
     devShells = forAllSystems (
-      pkgs: {
+      pkgs: let
+        python-deps = ps:
+          with ps; [
+            pip
+            flask
+          ];
+      in {
         default =
           pkgs.mkShell
           {
             packages = with pkgs; [
+              (python3.withPackages python-deps)
+              black
               uthash
               clang-tools
               cjson
