@@ -25,8 +25,8 @@ def api_search():
     data = request.json or {}
 
     base_path = os.path.dirname(os.path.abspath(__file__))
-    binary_path = os.path.join(base_path, "main")
-    data_path = os.path.join(base_path, "output.bin")
+    binary_path = os.path.join(base_path, "src/", "main")
+    data_path = os.path.join(base_path, "src/", "output.bin")
 
     args = [binary_path, "-f", data_path]
     if "name" in data:
