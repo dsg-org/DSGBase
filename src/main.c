@@ -37,6 +37,12 @@ typedef struct user
     bool id_set;
 } User;
 
+typedef struct SurnameSet
+{
+    char* surname;
+    UT_hash_handle hh;
+} SurnameSet;
+
 void trim_and_copy(char*, const char*);
 void convert_to_bin(char*);
 void print_progress(int, int);
@@ -48,12 +54,14 @@ void search_users_by_surname(const char* surname);
 void search_users_by_region(const char* region);
 void search_users(const User*);
 void cleanup_hash_table(void);
+void print_surname(void);
 
 int bflag = 0;
 int fflag = 0;
 int nflag = 0;
 int sflag = 0;
 int iflag = 0;
+int pflag = 0;
 int rflag = 0;
 
 int main(int argc, char* argv[])
@@ -155,6 +163,10 @@ int main(int argc, char* argv[])
                         s->id_set = true;
                     }
                     break;
+                case 'p':
+                    pflag = 1;
+                    break;
+
                 case 'r':
                     if (s->region)
                     {
@@ -182,6 +194,17 @@ int main(int argc, char* argv[])
         puts("Converting JSON to Binary.");
         convert_to_bin(p->in);
         puts("Successfully converted JSON to Binary.\n");
+        goto cleanup;
+    }
+
+    if (pflag)
+    {
+        if (fflag && s->fname)
+        {
+            printf("Loading users from binary file: %s\n", s->fname);
+            load_users_from_json(s->fname);
+        }
+        print_surname();
         goto cleanup;
     }
 
@@ -434,6 +457,39 @@ void search_users(const User* filters)
         }
 
         // printf("Found %d matching users.\n", found_count);
+    }
+}
+
+void print_surname(void)
+{
+    Data* current_user;
+    SurnameSet* surname_set = NULL;
+    SurnameSet* s;
+
+    puts("Unique surname list:\n");
+
+    for (current_user = person; current_user != NULL; current_user = current_user->hh.next)
+    {
+        // Check if surname is already in set
+        HASH_FIND_STR(surname_set, current_user->surname, s);
+        if (!s)
+        {
+            // Not found, print and add to set
+            printf("%s\n", current_user->surname);
+
+            s = malloc(sizeof(SurnameSet));
+            s->surname = strdup(current_user->surname);
+            HASH_ADD_KEYPTR(hh, surname_set, s->surname, strlen(s->surname), s);
+        }
+    }
+
+    // Cleanup: free the set
+    SurnameSet* tmp;
+    HASH_ITER(hh, surname_set, s, tmp)
+    {
+        HASH_DEL(surname_set, s);
+        free(s->surname);
+        free(s);
     }
 }
 
