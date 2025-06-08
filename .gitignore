@@ -4,6 +4,8 @@
 *.bin
 *.out
 *.json
+*.o
+*.txt
 main
 __pycache__/
 venv/
