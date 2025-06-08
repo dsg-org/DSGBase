@@ -1,18 +1,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "file_handling.h"
-#include "user_handling.h"
+#include "./headers/file_handling.h"
+#include "./headers/user_handling.h"
 
 #define MAX_STR_LEN 64
-
-int bflag = 0;
-int fflag = 0;
-int nflag = 0;
-int sflag = 0;
-int iflag = 0;
-int pflag = 0;
-int rflag = 0;
 
 int main(int argc, char* argv[])
 {
@@ -27,9 +19,18 @@ int main(int argc, char* argv[])
         fprintf(stderr, "  -s <surname>      Search by surname\n");
         fprintf(stderr, "  -i <id>           Search by ID\n");
         fprintf(stderr, "  -r <region>       Search by region\n");
+        fprintf(stderr, "  -p                \n");
 
         return EXIT_FAILURE;
     }
+
+    bool bflag = false;
+    bool fflag = false;
+    bool nflag = false;
+    bool sflag = false;
+    bool iflag = false;
+    bool pflag = false;
+    bool rflag = false;
 
     User* s;
     PackedUser* p;
@@ -52,7 +53,7 @@ int main(int argc, char* argv[])
                     i++;
                     if (i < argc)
                     {
-                        bflag = 1;
+                        bflag = true;
                         p->in = strdup(argv[i]);
                     }
                     break;
@@ -66,7 +67,7 @@ int main(int argc, char* argv[])
                     i++;
                     if (i < argc)
                     {
-                        fflag = 1;
+                        fflag = true;
                         s->fname = strdup(argv[i]);
                     }
                     break;
@@ -80,7 +81,7 @@ int main(int argc, char* argv[])
                     i++;
                     if (i < argc)
                     {
-                        nflag = 1;
+                        nflag = true;
                         s->name = strdup(argv[i]);
                     }
                     break;
@@ -94,7 +95,7 @@ int main(int argc, char* argv[])
                     i++;
                     if (i < argc)
                     {
-                        sflag = 1;
+                        sflag = true;
                         s->surname = strdup(argv[i]);
                     }
                     break;
@@ -108,13 +109,13 @@ int main(int argc, char* argv[])
                     i++;
                     if (i < argc)
                     {
-                        iflag = 1;
+                        iflag = true;
                         s->id = strtoll(argv[i], NULL, 10);
                         s->id_set = true;
                     }
                     break;
                 case 'p':
-                    pflag = 1;
+                    pflag = true;
                     break;
 
                 case 'r':
@@ -127,7 +128,7 @@ int main(int argc, char* argv[])
                     i++;
                     if (i < argc)
                     {
-                        rflag = 1;
+                        rflag = true;
                         s->region = strdup(argv[i]);
                     }
                     break;
@@ -175,7 +176,7 @@ int main(int argc, char* argv[])
         puts("Performing filtered search...\n");
         puts("[");
         search_users(s);
-        puts("]");
+        puts("\n]");
         goto cleanup;
     }
 
