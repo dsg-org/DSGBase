@@ -1,3 +1,6 @@
+#ifndef USER_HANDLING_H
+#define USER_HANDLING_H
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <uthash.h>
@@ -71,3 +74,5 @@ void cleanup_hash_table(void);
  * Internally uses a temporary uthash `SurnameSet` to track which surnames were printed.
  */
 void print_surname(void);
+
+#endif // USER_HANDLING_H

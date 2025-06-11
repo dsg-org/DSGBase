@@ -1,4 +1,4 @@
-#include "../headers/file_handling.h"
+#include "file_handling.h"
 
 #include <cjson/cJSON.h> // JSON parsing library
 #include <stdio.h>

@@ -34,6 +34,7 @@
               uthash
               clang-tools
               cjson
+              bear
             ];
           };
       }

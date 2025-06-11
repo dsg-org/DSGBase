@@ -1,11 +1,11 @@
-#include "../headers/user_handling.h"
+#include "user_handling.h"
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <uthash.h>
 
-#include "../headers/file_handling.h"
+#include "file_handling.h"
 
 // Global hash table pointer
 Data* person = NULL;

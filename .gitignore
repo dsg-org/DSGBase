@@ -1,11 +1,11 @@
 .direnv/
 .ccls-cache/
+.cache/
 .envrc
 *.bin
 *.out
 *.json
 *.o
-*.txt
 main
 __pycache__/
 venv/

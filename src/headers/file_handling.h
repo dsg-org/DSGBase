@@ -1,3 +1,6 @@
+#ifndef FILE_HANDLING_H
+#define FILE_HANDLING_H
+
 #include <stdlib.h>
 
 #define MAX_STR_LEN 64 // Maximum length for string fields in PackedUser
@@ -35,3 +38,5 @@ void convert_to_bin(char* fname);
  * @param total   The total number of items to process.
  */
 void print_progress(int current, int total);
+
+#endif // FILE_HANDLING_H

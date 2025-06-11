@@ -1,8 +1,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "./headers/file_handling.h"
-#include "./headers/user_handling.h"
+#include "file_handling.h"
+#include "user_handling.h"
 
 #define MAX_STR_LEN 64
 
