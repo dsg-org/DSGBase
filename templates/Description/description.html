@@ -6,8 +6,8 @@
     <title>DSGBase</title>
     <link rel="stylesheet" href="../../static/Description/style.css" />
     <link rel="stylesheet" href="../../static/header.css" />
-  
   </head>
+
   <body>
     <header>
       <div class="logo-text">
@@ -23,73 +23,88 @@
     <div class="sideNav">
       <nav class="nav-1">
         <ul>
-          <li class="nav-1-activate"><a href="/description">Description</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/">Base</a></li>
-          <li><a href="/settings">Settings</a></li>
+          <li class="nav-1-activate">
+            <a href="/description">Description</a>
+          </li>
+          <li >
+            <a href="/about">About</a>
+          </li>
+          <li>
+            <a href="/">Base</a>
+          </li>
+          <li>
+            <a href="/settings">Settings</a>
+          </li>
         </ul>
       </nav>
     </div>
 
+ 
     <main>
       <div class="div-main">
         <div class="div-overview-flex">
-          <!-- Overview ბლოკები -->
-         
-  
           <div class="overview">
-            <div class="div-overview-1">
-              <h1>Overview</h1>
-              <h2>5,520.01</h2>
-              <span class="trend-up">▲ 1.37%</span>
-              <p class="subtitle">Region population</p>
-              <ul>
-                <li><i class="location-icon"></i> Zugdidi <span>1,692,130</span></li>
-                <li><i class="location-icon"></i> Kutaisi <span>1,120,450</span></li>
-                <li><i class="location-icon"></i> Tbilisi <span>3,402,320</span></li>
-                <li><i class="location-icon"></i> Batumi <span>912,770</span></li>
-                <li><i class="location-icon"></i> Rustavi <span>832,190</span></li>
-              </ul>
-            </div>
+            <h2>Total Customers</h2>
+            <h3 id="totalCustomers">Loading...</h3>
+            <p class="subtitle">Region Distribution</p>
+            <ul id="regionList"></ul>
+          </div>
+
+          <div class="highlight-box">
+            <h2>Top Highlights</h2>
+            <ul>
+              <li><strong>Top Region:</strong> <span id="topRegion">Loading...</span></li>
+              <li><strong>Top Surname:</strong> <span id="topSurname">Loading...</span></li>
+              <li><strong>Top Name:</strong> <span id="topName">Loading...</span></li>
+            </ul>
           </div>
         </div>
 
         <div class="cards-container">
           <div class="stat-card">
-            <div class="card-icon money"></div>
             <p>Total Revenue</p>
-            <h2>$6,101.01</h2>
-            <span class="trend-up">▲ 1.37%</span>
-            <div class="change green">This week +$635.00</div>
+            <h2 id="totalRevenue">Loading...</h2>
+            <span class="trend-up">▲ Live</span>
           </div>
 
           <div class="stat-card">
-            <div class="card-icon transactions"></div>
             <p>Total Transactions</p>
-            <h2>1021</h2>
-            <span class="trend-down">▼ 1.37%</span>
-            <div class="change red">This week +210</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="card-icon customer"></div>
-            <p>Total Customer</p>
-            <h2>914</h2>
-            <span class="trend-up">▲ 1.37%</span>
-            <div class="change green">This week +125</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="card-icon star"></div>
-            <p>New Subscriptions</p>
-            <h2>432</h2>
-            <span class="trend-up">▲ 0.87%</span>
-            <div class="change green">This week +78</div>
+            <h2 id="totalTransactions">Loading...</h2>
+            <span class="trend-down">▼ Live</span>
           </div>
         </div>
       </div>
     </main>
-  <script src="../../static/header-javascript.js"></script>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const response = await fetch("/api/summary");
+          const data = await response.json();
+
+          document.getElementById("totalCustomers").textContent = data.total_customers;
+          document.getElementById("totalRevenue").textContent = "$" + data.total_revenue.toFixed(2);
+          document.getElementById("totalTransactions").textContent = data.total_transactions;
+
+          // Populate region list
+          const regionList = document.getElementById("regionList");
+          regionList.innerHTML = "";
+          for (const [region, count] of Object.entries(data.region_distribution)) {
+            const li = document.createElement("li");
+            li.textContent = `${region}: ${count}`;
+            regionList.appendChild(li);
+          }
+
+          document.getElementById("topRegion").textContent = data.top_region;
+          document.getElementById("topSurname").textContent = data.top_surname;
+          document.getElementById("topName").textContent = data.top_name;
+
+        } catch (err) {
+          console.error("Error loading data:", err);
+        }
+      });
+    </script>
+
+    <script src="../../static/header-javascript.js"></script>
   </body>
 </html>
-„

@@ -1,129 +1,126 @@
+
+
 .div-main {
   padding: 2rem;
-  font-family: "Segoe UI", sans-serif;
-}
-.div-overview-flex {
   display: flex;
-  justify-content: center;
-}
-.overview {
-  background: linear-gradient(135deg, #2a1a35, #502e7e);
-  border-radius: 20px;
-  padding: 2rem;
-  color: white;
-  box-shadow: 0 0 20px rgba(190, 20, 236, 0.2);
-  max-width: 500px;
-  width: 400px;
-  margin: 60px;
+  flex-direction: column;
+  gap: 30px;
 }
 
-.div-overview-1 h1 {
-  font-size: 1.8rem;
+
+
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  padding: 0 20px;
+}
+
+.sideNav {
+  background-color: #0d0d0d;
+  width: 200px;
+  padding: 1rem;
+}
+
+.sideNav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sideNav li {
+  margin: 10px 0;
+}
+
+.sideNav a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.sideNav .nav-1-activate a {
+  /* background-color: #8b00ff; */
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.div-overview-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.overview, .highlight-box, .stat-card {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(139, 0, 255, 0.2);
+  flex: 1 1 300px;
+  max-width: 400px;
+}
+
+.overview h1,
+.highlight-box h2 {
+  color: #e600ff;
+  font-size: 1.6rem;
   margin-bottom: 1rem;
 }
 
-.div-overview-1 h2 {
-  font-size: 2.2rem;
-  font-weight: bold;
-  margin: 0;
-}
-
-.trend-up {
-  color: #34d399;
-  /font-weight: bold;
-  margin-top: 0.5rem;
-  display: inline-block;
-}
-
-.subtitle {
-  margin-top: 1.5rem;
+.stat-card p {
   font-size: 1rem;
-  color: #ccc;
-  font-weight: 500;
+  margin-bottom: 0.5rem;
+  opacity: 0.7;
 }
 
-.div-main ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 1rem;
+.stat-card h2 {
+  font-size: 2rem;
+  margin: 0.5rem 0;
 }
 
-.div-main ul li {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.4rem 0;
-  border-bottom: 1px dotted #666;
-  font-size: 1rem;
-}
-
-.location-icon {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  background: url("https://cdn-icons-png.flaticon.com/512/684/684908.png")
-    no-repeat center;
-  background-size: contain;
-  margin-right: 10px;
-  filter: invert(1);
-}
 .cards-container {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-  padding: 2rem;
   justify-content: center;
-}
-
-.stat-card {
-  background: linear-gradient(135deg, #2a1a35, #502e7e);
-  color: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  width: 220px;
-  box-shadow: 0 0 15px rgba(190, 20, 236, 0.15);
-  transition: transform 0.3s ease;
-  position: relative;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(190, 20, 236, 0.3);
-}
-
-.stat-card p {
-  font-size: 0.95rem;
-  margin-bottom: 0.5rem;
-  opacity: 0.8;
-}
-
-.stat-card h2 {
-  font-size: 1.8rem;
-  margin: 0.2rem 0;
 }
 
 .trend-up {
   color: #34d399;
   font-weight: bold;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
 .trend-down {
   color: #f87171;
   font-weight: bold;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
-.change {
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.green {
-  color: #10b981;
+ul li {
+  padding: 0.5rem 0;
+  border-bottom: 1px dotted #444;
+  display: flex;
+  justify-content: space-between;
 }
 
-.red {
-  color: #ef4444;
+.location-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url("https://cdn-icons-png.flaticon.com/512/684/684908.png") no-repeat center;
+  background-size: contain;
+  margin-right: 10px;
+  filter: invert(1);
 }
 
 .card-icon {
@@ -139,48 +136,28 @@
 .money {
   background-image: url("https://cdn-icons-png.flaticon.com/512/3135/3135715.png");
 }
+
 .transactions {
   background-image: url("https://cdn-icons-png.flaticon.com/512/1828/1828911.png");
-}
-.customer {
-  background-image: url("https://cdn-icons-png.flaticon.com/512/1077/1077114.png");
-}
-.star {
-  background-image: url("https://cdn-icons-png.flaticon.com/512/1828/1828970.png");
-}
-.menu-toggle {
-  display: none;
-  font-size: 2rem;
-  color: white;
-  cursor: pointer;
-  margin-left: auto;
-  padding: 0 20px;
-  align-items: center;
-  justify-content: center;
 }
 
 @media (max-width: 800px) {
   .menu-toggle {
-    display: flex;
+    display: block;
   }
 
   .sideNav {
+    position: fixed;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    position: fixed;
     top: 60px;
     left: 0;
     width: 220px;
-    background-color: #1a1a1a;
     height: calc(100vh - 60px);
     z-index: 1000;
   }
 
   .sideNav.active {
     transform: translateX(0);
-  }
-
-  main {
-    padding-left: 0;
   }
 }
