@@ -1,0 +1,43 @@
+<!-- templates/base_page.html -->
+{% extends "base.html" %}
+{% set active_page = 'base' %}
+
+{% block title %}Base - DSGBase{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='Base-css/styles.css') }}" />
+{% endblock %}
+{% block location %}Base{% endblock %}
+
+{% block content %}
+<div class="main-div">
+  <form id="searchForm">
+    <div class="search-div">
+      <div class="search-name">
+        <input type="text" placeholder="Name" name="name" />
+      </div>
+      <div class="search-lastname">
+        <input type="text" placeholder="Lastname" name="surname" />
+      </div>
+      <div class="search-id">
+        <input type="text" placeholder="ID" name="id" />
+      </div>
+      <div class="search-region">
+        <input type="text" placeholder="District" name="region" />
+      </div>
+      <div class="search-button">
+        <button type="submit">Search</button>
+      </div>
+      <div class="more">
+        <div id="statusMessage" class="status" style="display: none"></div>
+        <div class="user-information scroll-container">
+          <div class="userinformation"></div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}
