@@ -1,11 +1,14 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}DSGBase{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='header.css') }}"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='Auth-css/overlay.css') }}">
     {% block extra_css %}{% endblock %}
   </head>
   <body>
@@ -22,7 +25,9 @@
     <div class="sideNav">
       <nav class="nav-1">
         <ul>
-          <li class="{% if active_page == 'description' %}nav-1-activate{% endif %}">
+          <li
+            class="{% if active_page == 'description' %}nav-1-activate{% endif %}"
+          >
             <a href="/description">Description</a>
           </li>
           <li class="{% if active_page == 'about' %}nav-1-activate{% endif %}">
@@ -31,18 +36,57 @@
           <li class="{% if active_page == 'base' %}nav-1-activate{% endif %}">
             <a href="/">Base</a>
           </li>
-          <li class="{% if active_page == 'settings' %}nav-1-activate{% endif %}">
-            <a href="/settings">Settings</a>
+          <li
+            class="{% if active_page == 'profile' %}nav-1-activate{% endif %}"
+          >
+            <a href="/profile">Profile</a>
           </li>
         </ul>
       </nav>
     </div>
 
-    <main>
-      {% block content %}{% endblock %}
-    </main>
+    <main>{% block content %}{% endblock %}</main>
 
+    <!-- SCRIPT -->
+
+
+    <!-- LOGIN/REGISTER OVERLAY -->
+    {% if show_login_overlay or show_register_overlay %}
+<div id="login-overlay">
+  <div class="login-form">
+    <div class="login-tabs">
+      <button class="tab-button active" onclick="showLogin()">Login</button>
+      <button class="tab-button" onclick="showRegister()">Register</button>
+    </div>
+
+    <!-- აქ ორივე ფორმას ვტვირთავთ -->
+    <div id="login-form-wrapper" {% if not show_login_overlay %}style="display: none;"{% endif %}>
+      {% include "Auth/login.html" %}
+    </div>
+
+    <div id="register-form-wrapper" {% if not show_register_overlay %}style="display: none;"{% endif %}>
+      {% include "Auth/register.html" %}
+    </div>
+  </div>
+</div>
+{% endif %}
     <script src="{{ url_for('static', filename='header-javascript.js') }}"></script>
-    {% block extra_js %}{% endblock %}
+<script>
+  function showLogin() {
+    document.getElementById("login-form-wrapper").style.display = "block";
+    document.getElementById("register-form-wrapper").style.display = "none";
+    document.querySelector(".tab-button:nth-child(1)").classList.add("active");
+    document.querySelector(".tab-button:nth-child(2)").classList.remove("active");
+  }
+
+  function showRegister() {
+    document.getElementById("login-form-wrapper").style.display = "none";
+    document.getElementById("register-form-wrapper").style.display = "block";
+    document.querySelector(".tab-button:nth-child(1)").classList.remove("active");
+    document.querySelector(".tab-button:nth-child(2)").classList.add("active");
+  }
+</script>
+
+{% block extra_js %}{% endblock %}
   </body>
 </html>

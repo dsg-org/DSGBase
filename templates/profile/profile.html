@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DSGBase – Profile</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='header.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='Profile-css/style.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo-text">
+        <div class="text-position">
+          <h1>DSGBase</h1>
+        </div>
+      </div>
+      <div class="location">
+        <h1>Profile</h1>
+      </div>
+      <div class="menu-toggle" onclick="toggleNav()">☰</div>
+    </header>
+
+    <div class="sideNav">
+      <nav class="nav-1">
+        <ul>
+          <li><a href="/description">Description</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/">Base</a></li>
+          <li class="nav-1-activate"><a href="/profile">Profile</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <main>
+      <div class="main-div">
+        <div class="user-header">
+          <div class="profile-image">
+            <img
+              src="{{ url_for('static', filename='images/' + user.img) }}"
+              alt="Profile Picture"
+            />
+          </div>
+          <div class="user-name">
+            <div class="name"><h3>Username: {{ user.username }}</h3></div>
+            <div class="nickname">
+              <h3>Nickname: {{ user.nickname or '—' }}</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-main">
+          <div class="user-status">
+            <h3>User Status</h3>
+            <ul>
+              <li><strong>Role:</strong> {{ user.role|capitalize }}</li>
+              <li>
+                <strong>Registered on:</strong> {{
+                user.created_at.strftime('%Y-%m-%d') if user.created_at else '—'
+                }}
+              </li>
+              <li>
+                <strong>Last Login:</strong> {{
+                user.last_login.strftime('%Y-%m-%d') if user.last_login else '—'
+                }}
+              </li>
+            </ul>
+          </div>
+          <div class="user-info">
+            <h3>Personal Info</h3>
+            <ul>
+              <li><strong>First Name:</strong> {{ user.first_name or '—' }}</li>
+              <li><strong>Last Name:</strong> {{ user.last_name or '—' }}</li>
+              <li><strong>Email:</strong> {{ user.email }}</li>
+              <li><strong>Region:</strong> {{ user.region or '—' }}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="edit-toggle-container">
+          <button id="toggleEdit" class="edit-toggle-btn">Edit Profile</button>
+          <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+
+        <div class="edit-profile-wrapper hidden" id="editSection">
+          <h2>Edit Profile</h2>
+          <form method="POST" enctype="multipart/form-data">
+            <label for="nickname">Nickname:</label>
+            <input
+              type="text"
+              name="nickname"
+              id="nickname"
+              value="{{ user.nickname or '' }}"
+            />
+
+            <label for="region">Select Region:</label>
+            <select name="region" id="region">
+              <option value="">-- Select --</option>
+              {% for r in ['Tbilisi', 'Kutaisi', 'Batumi', 'Zugdidi', 'Rustavi',
+              'Other'] %} {% if user.region == r %}
+              <option value="{{ r }}" selected>{{ r }}</option>
+              {% else %}
+              <option value="{{ r }}">{{ r }}</option>
+              {% endif %} {% endfor %}
+            </select>
+
+            <label for="img">Profile Picture:</label>
+            <div class="image-upload-wrapper">
+              <label for="img">
+                {% if user.img %}
+                <img
+                  src="{{ url_for('static', filename='images/' + user.img) }}"
+                  class="image-preview"
+                />
+                {% else %}
+                <div class="image-placeholder">Click to upload</div>
+                {% endif %}
+              </label>
+              <input
+                type="file"
+                name="img"
+                id="img"
+                accept="image/*"
+                style="display: none"
+              />
+            </div>
+
+            <button type="submit">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='header-javascript.js') }}"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById("toggleEdit");
+        const editSection = document.getElementById("editSection");
+        const imgInput = document.getElementById("img");
+        const preview = document.querySelector(".image-preview");
+        const nicknameInput = document.getElementById("nickname");
+        const regionSelect = document.getElementById("region");
+
+        toggleBtn.addEventListener("click", () => {
+          editSection.classList.toggle("hidden");
+          toggleBtn.textContent = editSection.classList.contains("hidden")
+            ? "Edit Profile"
+            : "Hide Editor";
+        });
+
+        imgInput?.addEventListener("change", function () {
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              if (preview) {
+                preview.src = e.target.result;
+              } else {
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.className = "image-preview";
+                const wrapper = imgInput.closest(".image-upload-wrapper");
+                wrapper.querySelector("label").innerHTML = "";
+                wrapper.querySelector("label").appendChild(img);
+              }
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        [nicknameInput, regionSelect].forEach((input) => {
+          input.addEventListener("focus", () =>
+            input.classList.add("active-input")
+          );
+          input.addEventListener("blur", () =>
+            input.classList.remove("active-input")
+          );
+        });
+      });
+    </script>
+  </body>
+</html>

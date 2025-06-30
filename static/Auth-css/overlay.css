@@ -1,0 +1,87 @@
+#login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  background-color: rgba(20, 20, 30, 0.96);
+  border: 1px solid #9900ff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 400px;
+  max-width: 90vw;
+  color: white;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  font-family: "JetBrains Mono", monospace;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+  background-color: #e4eaff;
+  color: black;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.login-form button[type="submit"] {
+  background: linear-gradient(135deg, #8110cc, #9900ff);
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.login-form button[type="submit"]:hover {
+  opacity: 0.95;
+  transform: scale(1.01);
+}
+
+.login-tabs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  width: 48%;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: #222;
+  color: #ccc;
+  transition: 0.2s ease;
+}
+
+.tab-button.active {
+  background: linear-gradient(135deg, #8110cc, #9900ff);
+  color: white;
+}
+
+.tab-button:hover {
+  opacity: 0.9;
+}
+
+.login-form form {
+  width: 100%;
+  box-sizing: border-box;
+}
