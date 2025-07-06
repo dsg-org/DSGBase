@@ -53,7 +53,7 @@ void convert_to_bin(char* fname)
     }
 
     // Open binary output file
-    FILE* out = fopen("output.bin", "wb");
+    FILE* out = fopen("src/output.bin", "wb");
     if (!out)
     {
         perror("Failed to open output");

@@ -1,12 +1,14 @@
 from flask import render_template, request, jsonify, redirect, url_for
 from flask_login import current_user, login_required
-import os, subprocess, json, threading
-from flask_login import login_required, current_user
-from flask import request, redirect, url_for, flash
-from flask_login import login_required, current_user
-from ext import db
+import os
+import subprocess
+import json
+import threading
+from flask import flash
+from pysrc.ext import db
 
 process_lock = threading.Lock()
+
 
 def register_routes(app):
     @app.route("/profile/update", methods=["POST"])
@@ -14,34 +16,34 @@ def register_routes(app):
     def update_profile():
         nickname = request.form.get("nickname", "").strip()
         region = request.form.get("region", "").strip()
-    
+
         current_user.nickname = nickname
         current_user.region = region
-    
+
         try:
             db.session.commit()
             flash("Profile updated successfully!", "success")
-        except Exception as e:
+        except Exception:
             db.session.rollback()
             flash("An error occurred while updating profile.", "danger")
-    
+
         return redirect(url_for("profile"))
 
     @app.route("/")
     def index():
-        return render_template("index.html", show_login_overlay=not current_user.is_authenticated)
+        return render_template(
+            "index.html", show_login_overlay=not current_user.is_authenticated
+        )
 
     @app.route("/about")
     @login_required
     def about():
         return render_template("About/about.html")
 
-
     @app.route("/profile")
     @login_required
     def profile():
         return render_template("Profile/profile.html", user=current_user)
-
 
     @app.route("/description")
     @login_required

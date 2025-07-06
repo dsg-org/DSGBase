@@ -9,3 +9,4 @@
 main
 __pycache__/
 venv/
+instance/

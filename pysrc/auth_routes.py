@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
-from models import User
-from ext import db  
+from pysrc.models import User
+from pysrc.ext import db
 
 auth = Blueprint("auth", __name__, template_folder="templates")
 
@@ -55,7 +55,7 @@ def register():
             last_name=last_name,
             email=email,
             username=username,
-            password=hashed_password
+            password=hashed_password,
         )
 
         db.session.add(user)
@@ -66,10 +66,8 @@ def register():
     return render_template("base.html", show_login_overlay=True)
 
 
-
 @auth.route("/logout")
 @login_required
 def logout():
     logout_user()
     return redirect(url_for("index"))
-

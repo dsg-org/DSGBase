@@ -1,6 +1,7 @@
 from flask_login import UserMixin
-from ext import db
+from pysrc.ext import db
 from datetime import datetime
+
 
 class User(db.Model, UserMixin):
     __tablename__ = "users"
@@ -12,7 +13,7 @@ class User(db.Model, UserMixin):
 
     first_name = db.Column(db.String(100), nullable=True)
     last_name = db.Column(db.String(100), nullable=True)
-    region = db.Column(db.String(100), nullable=True) 
+    region = db.Column(db.String(100), nullable=True)
     nickname = db.Column(db.String(100), nullable=True)
 
     img = db.Column(db.String(150), default="default_profile.png")

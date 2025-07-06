@@ -23,6 +23,8 @@
           with ps; [
             pip
             flask
+            flask-sqlalchemy
+            flask-login
           ];
       in {
         default =

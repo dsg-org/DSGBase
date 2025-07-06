@@ -2,12 +2,12 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 import os
-from ext import db
-from models import User
+from pysrc.ext import db
 
 profile_bp = Blueprint("profile", __name__, template_folder="templates")
 
 UPLOAD_FOLDER = "static/images"
+
 
 @profile_bp.route("/profile", methods=["GET", "POST"])
 @login_required
@@ -33,4 +33,4 @@ def profile():
         flash("Profile updated successfully!", "success")
         return redirect(url_for("profile.profile"))
 
-    return render_template("Profile/profile.html", user=current_user)
+    return render_template("profile/profile.html", user=current_user)
