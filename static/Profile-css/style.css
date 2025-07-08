@@ -261,3 +261,49 @@ main {
   background-color: #9d0ec1;
   transform: scale(1.05);
 }
+/* Edit Profile Form */
+.edit-profile-wrapper label {
+  display: block;
+  margin-bottom: 6px;
+  margin-top: 14px;
+  font-weight: bold;
+  color: #be14ec;
+}
+
+.edit-profile-wrapper input[type="text"],
+.edit-profile-wrapper select,
+.edit-profile-wrapper input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.4);
+  font-size: 0.95rem;
+  transition: border 0.2s;
+}
+
+/* Focus state for inputs */
+.edit-profile-wrapper input[type="text"]:focus,
+.edit-profile-wrapper select:focus {
+  outline: none;
+  border: 1px solid #be14ec;
+}
+
+/* Button styles */
+.edit-profile-wrapper button {
+  margin-top: 20px;
+  background-color: #be14ec;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.edit-profile-wrapper button:hover {
+  background-color: #9e0ec2;
+}

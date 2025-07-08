@@ -10,7 +10,6 @@ int main(int argc, char* argv[])
 {
     if (argc == 1)
     {
-        // If no search flags are provided, show usage
         fprintf(stderr, "Usage: %s [OPTIONS]\n", argv[0]);
         fprintf(stderr, "Options:\n");
         fprintf(stderr, "  -b <json_file>    Convert JSON file to binary\n");
@@ -161,7 +160,6 @@ int main(int argc, char* argv[])
 
     if (nflag || sflag || iflag || rflag)
     {
-        // Load the binary file if filename is provided
         if (fflag && s->fname)
         {
             printf("Loading users from binary file: %s\n", s->fname);
@@ -193,7 +191,6 @@ cleanup:
         free(p);
     }
 
-    // Clean up the hash table
     cleanup_hash_table();
 
     return EXIT_SUCCESS;
