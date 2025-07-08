@@ -8,7 +8,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='header.css') }}"
     />
-    <link rel="stylesheet" href="{{ url_for('static', filename='Auth-css/overlay.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='Auth-css/overlay.css') }}"
+    />
     {% block extra_css %}{% endblock %}
   </head>
   <body>
@@ -41,49 +44,83 @@
           >
             <a href="/profile">Profile</a>
           </li>
+          <li
+            class="{% if active_page == 'PageUsers' %}nav-1-activate{% endif %}"
+          >
+            <a href="/PageUsers">Users</a>
+          </li>
         </ul>
       </nav>
-    </div>
+      <div class="tbc-logo-div">
+      <div class="tbcLogo"><img src="../static/img/tbcLogo.png" alt="" /></div>
+    </div></div>
 
     <main>{% block content %}{% endblock %}</main>
 
-
-
     {% if show_login_overlay or show_register_overlay %}
-<div id="login-overlay">
-  <div class="login-form">
-    <div class="login-tabs">
-      <button class="tab-button active" onclick="showLogin()">Login</button>
-      <button class="tab-button" onclick="showRegister()">Register</button>
-    </div>
+    <div id="login-overlay">
+      <div class="login-form">
+        <div class="login-tabs">
+          <button class="tab-button active" onclick="showLogin()">Login</button>
+          <button class="tab-button" onclick="showRegister()">Register</button>
+        </div>
 
-    <div id="login-form-wrapper" {% if not show_login_overlay %}style="display: none;"{% endif %}>
-      {% include "Auth/login.html" %}
-    </div>
+        <div
+          id="login-form-wrapper"
+          {%
+          if
+          not
+          show_login_overlay
+          %}style="display: none;"
+          {%
+          endif
+          %}
+        >
+          {% include "Auth/login.html" %}
+        </div>
 
-    <div id="register-form-wrapper" {% if not show_register_overlay %}style="display: none;"{% endif %}>
-      {% include "Auth/register.html" %}
+        <div
+          id="register-form-wrapper"
+          {%
+          if
+          not
+          show_register_overlay
+          %}style="display: none;"
+          {%
+          endif
+          %}
+        >
+          {% include "Auth/register.html" %}
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-{% endif %}
+    {% endif %}
     <script src="{{ url_for('static', filename='header-javascript.js') }}"></script>
-<script>
-  function showLogin() {
-    document.getElementById("login-form-wrapper").style.display = "block";
-    document.getElementById("register-form-wrapper").style.display = "none";
-    document.querySelector(".tab-button:nth-child(1)").classList.add("active");
-    document.querySelector(".tab-button:nth-child(2)").classList.remove("active");
-  }
+    <script>
+      function showLogin() {
+        document.getElementById("login-form-wrapper").style.display = "block";
+        document.getElementById("register-form-wrapper").style.display = "none";
+        document
+          .querySelector(".tab-button:nth-child(1)")
+          .classList.add("active");
+        document
+          .querySelector(".tab-button:nth-child(2)")
+          .classList.remove("active");
+      }
 
-  function showRegister() {
-    document.getElementById("login-form-wrapper").style.display = "none";
-    document.getElementById("register-form-wrapper").style.display = "block";
-    document.querySelector(".tab-button:nth-child(1)").classList.remove("active");
-    document.querySelector(".tab-button:nth-child(2)").classList.add("active");
-  }
-</script>
+      function showRegister() {
+        document.getElementById("login-form-wrapper").style.display = "none";
+        document.getElementById("register-form-wrapper").style.display =
+          "block";
+        document
+          .querySelector(".tab-button:nth-child(1)")
+          .classList.remove("active");
+        document
+          .querySelector(".tab-button:nth-child(2)")
+          .classList.add("active");
+      }
+    </script>
 
-{% block extra_js %}{% endblock %}
+    {% block extra_js %}{% endblock %}
   </body>
 </html>

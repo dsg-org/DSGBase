@@ -127,7 +127,7 @@ def register_routes(app):
     @login_required
     def get_summary():
         try:
-            with open("data/Desc.json", "r", encoding="utf-8") as f:
+            with open("static/data/Desc.json", "r", encoding="utf-8") as f:
                 return jsonify(json.load(f))
         except Exception as e:
             return {"error": str(e)}, 500

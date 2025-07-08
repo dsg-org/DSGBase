@@ -35,7 +35,6 @@ header {
   width: 180px;
   height: 100%;
   border-right: 0.09px solid var(--line-color);
-  
 }
 
 .text-position {
@@ -83,6 +82,7 @@ header {
 }
 
 .nav-1 {
+  flex-grow: 1;
   display: flex;
   justify-content: center;
 }
@@ -126,13 +126,11 @@ header {
   transition: 0.3s;
 }
 
-/* main-content */
 main {
   padding: 90px 0px 0px 180px;
   background-color: var(--max-black-color);
 }
 
-/*  ჰედერი ბურგერაიქონი რესპონსივისთვის :) */
 @media (max-width: 800px) {
   .menu-toggle {
     display: flex;
@@ -140,9 +138,8 @@ main {
 
   .sideNav {
     transform: translateX(-100%);
-    top: 60px;
     height: calc(100vh - 60px);
-    z-index: 100;
+    z-index: 10;
   }
 
   .sideNav.active {
@@ -152,4 +149,25 @@ main {
   main {
     padding-left: 0;
   }
+}
+.sideNav {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.tbc-logo-div {
+  margin-top: auto; 
+  text-align: center;
+  padding: 20px 26px 0px 0px;
+; 
+  z-index: 200;
+  height: 150px;
+  
+}
+.tbcLogo{
+ margin-top: auto; 
+  height: 20px;}
+.tbcLogo img {
+  height: 100%;
 }
