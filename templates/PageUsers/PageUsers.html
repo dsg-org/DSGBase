@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% set active_page = 'description' %}
+
+{% block title %}Description - DSGBase{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='PageUsers-css/style.css') }}">
+{% endblock %}
+{% block location %}User{% endblock %}
+{% block content %}
+      <div class="main-div">
+        {% for user in users %}
+        <a href="/PageUser/{{ user.id }}">
+          <div class="user-div">
+            <div class="div-left">
+              <div class="div-avatar">
+                <img src="{{ url_for('static', filename='images/' + user.img) }}" alt="{{ user.username }}" />
+              </div>
+              <div class="div-username"><h4>{{ user.username }}</h4></div>
+            </div>
+            <div class="div-right">
+              <div class="div-register-time">{{ user.created_at}}</div>
+              <div class="div-role">{{ user.role }}</div>
+            </div>
+          </div></a
+        >
+        {% endfor %}
+      </div>
+{% endblock %}

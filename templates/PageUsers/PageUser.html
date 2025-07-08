@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+{% set active_page = 'description' %}
+{% block title %}{{ user.username }}'s Profile - DSGBase{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='PageUser-css/style.css') }}" />
+<style>
+  /* Main padding */
+  main {
+    padding: 70px 20px 0px 20px;
+  }
+
+  @media screen and (min-width: 800px) {
+    main {
+      padding-left: 200px;
+    }
+  }
+
+  /* Profile container */
+  .main-div {
+    background-color: #1e1e1e;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Header with profile image and name */
+  .user-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .profile-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 30px;
+    overflow: hidden;
+    background-color: #2a2a2a;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+  }
+
+  .profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-name {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    height: 200px;
+    flex: 1;
+  }
+
+  .name,
+  .nickname {
+    background-color: #292929;
+    padding: 10px 15px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .name h3,
+  .nickname h3 {
+    font-size: 1.05rem;
+    font-weight: normal;
+    color: #f1f1f1;
+  }
+
+  /* Responsiveness for small screens */
+  @media screen and (max-width: 600px) {
+    .user-header {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .user-name {
+      height: auto;
+      align-items: center;
+      text-align: center;
+    }
+
+    .edit-profile-wrapper input,
+    .edit-profile-wrapper select {
+      font-size: 0.9rem;
+    }
+
+    .edit-profile-wrapper button {
+      width: 100%;
+    }
+  }
+
+  /* Profile sections (status, info) */
+  .user-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .user-status,
+  .user-info {
+    flex: 1 1 300px;
+    background-color: #292929;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+    color: #eaeaea;
+  }
+
+  .user-status h3,
+  .user-info h3 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+    color: #be14ec;
+  }
+
+  .user-status ul,
+  .user-info ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .user-status li,
+  .user-info li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #e0e0e0;
+  }
+
+  .user-status li strong,
+  .user-info li strong {
+    color: #be14ec;
+    font-weight: bold;
+  }
+
+  /* Edit profile form */
+  .edit-profile-wrapper {
+    margin-top: 25px;
+    background-color: #292929;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+    color: #eaeaea;
+  }
+
+  .edit-profile-wrapper h2 {
+    color: #be14ec;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+  }
+
+  .edit-profile-wrapper label {
+    display: block;
+    margin-bottom: 6px;
+    margin-top: 14px;
+    font-weight: bold;
+    color: #be14ec;
+  }
+
+  .edit-profile-wrapper input[type="text"],
+  .edit-profile-wrapper select,
+  .edit-profile-wrapper input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.4);
+    font-size: 0.95rem;
+    transition: border 0.2s;
+  }
+
+  .edit-profile-wrapper input[type="text"]:focus,
+  .edit-profile-wrapper select:focus {
+    outline: none;
+    border: 1px solid #be14ec;
+  }
+
+  .edit-profile-wrapper button {
+    margin-top: 20px;
+    background-color: #be14ec;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .edit-profile-wrapper button:hover {
+    background-color: #9e0ec2;
+  }
+
+  .image-preview {
+    display: block;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-top: 10px;
+    border: 2px solid #444;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+  }
+
+  .active-input {
+    border: 1px solid #be14ec !important;
+    box-shadow: 0 0 5px #be14ec77;
+  }
+
+  .edit-toggle-container {
+    margin-top: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .edit-toggle-btn,
+  .logout-btn {
+    background-color: #be14ec;
+    color: white;
+    padding: 10px 25px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .edit-toggle-btn:hover,
+  .logout-btn:hover {
+    background-color: #9d0ec1;
+    transform: scale(1.05);
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+{% endblock %}
+
+{% block location %}{{ user.username }}'s Profile{% endblock %}
+
+{% block content %}
+<div class="main-div">
+  <div class="user-header">
+    <div class="profile-image">
+      <img src="{{ url_for('static', filename='images/' + user.img) if user.img else url_for('static', filename='images/default-profile.png') }}" 
+           alt="{{ user.username }}'s profile picture"
+           id="profileImage"/>
+    </div>
+    <div>
+      <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+      <p>@{{ user.username }}</p>
+      <p>Member since {{ user.created_at.strftime('%B %Y') }}</p>
+    </div>
+  </div>
+
+  <div class="user-main">
+    <div class="user-status">
+      <h3>User Status</h3>
+      <ul>
+        <li><strong>Role:</strong> {{ user.role|capitalize }}</li>
+        <li><strong>Registered on:</strong> {{ user.created_at.strftime('%Y-%m-%d') }}</li>
+        {% if user.last_login %}
+        <li><strong>Last login:</strong> {{ user.last_login.strftime('%Y-%m-%d %H:%M') }}</li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="user-info">
+      <h3>Personal Info</h3>
+      <ul>
+        <li><strong>First Name:</strong> {{ user.first_name or '—' }}</li>
+        <li><strong>Last Name:</strong> {{ user.last_name or '—' }}</li>
+        <li><strong>Email:</strong> {{ user.email }}</li>
+        <li><strong>Region:</strong> {{ user.region or '—' }}</li>
+      </ul>
+    </div>
+  </div>
+
+  {% if current_user.id == user.id or current_user.role == 'admin' %}
+  <div class="edit-toggle-container">
+    <button class="edit-toggle-btn" id="editToggleBtn">Edit Profile</button>
+  </div>
+
+  <div class="edit-profile-wrapper hidden" id="editForm">
+<form method="POST" action="{{ url_for('profile.update_user_by_admin', user_id=user.id) }}" enctype="multipart/form-data">
+      <input type="file" name="img" id="imgInput" accept="image/*" style="display: none"/>
+      
+      <label for="first_name">First Name</label>
+      <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" required>
+      
+      <label for="last_name">Last Name</label>
+      <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" required>
+      
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" value="{{ user.email }}" required>
+      
+      <label for="region">Region</label>
+      <select name="region" id="region">
+        <option value="">Select region</option>
+        {% for region in ['Tbilisi', 'Kutaisi', 'Batumi', 'Zugdidi', 'Rustavi', 'Other'] %}
+          <option value="{{ region }}" {% if user.region == region %}selected{% endif %}>{{ region }}</option>
+        {% endfor %}
+      </select>
+       <label for="role">Role</label>
+    <select name="role" id="role">
+      <option value="member" {% if user.role == 'member' %}selected{% endif %}>Member</option>
+      <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+    </select>
+      
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const editToggleBtn = document.getElementById('editToggleBtn');
+    const editForm = document.getElementById('editForm');
+    const imgInput = document.getElementById('imgInput');
+    const profileImage = document.getElementById('profileImage');
+    
+    editToggleBtn.addEventListener('click', function() {
+      editForm.classList.toggle('hidden');
+      this.textContent = editForm.classList.contains('hidden') 
+        ? 'Edit Profile' 
+        : 'Cancel Editing';
+    });
+
+    profileImage.addEventListener('click', function() {
+      imgInput.click();
+    });
+    
+    imgInput.addEventListener('change', function(e) {
+      if (e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          profileImage.src = event.target.result;
+        };
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+  });
+</script>
+{% endblock %}

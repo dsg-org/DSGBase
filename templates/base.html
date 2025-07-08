@@ -47,10 +47,8 @@
 
     <main>{% block content %}{% endblock %}</main>
 
-    <!-- SCRIPT -->
 
 
-    <!-- LOGIN/REGISTER OVERLAY -->
     {% if show_login_overlay or show_register_overlay %}
 <div id="login-overlay">
   <div class="login-form">
@@ -59,7 +57,6 @@
       <button class="tab-button" onclick="showRegister()">Register</button>
     </div>
 
-    <!-- აქ ორივე ფორმას ვტვირთავთ -->
     <div id="login-form-wrapper" {% if not show_login_overlay %}style="display: none;"{% endif %}>
       {% include "Auth/login.html" %}
     </div>
