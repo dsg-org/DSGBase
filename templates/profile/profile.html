@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DSGBase – Profile</title>
+
+{% extends "base.html" %}
+{% set active_page = 'profile' %}
+
+{% block title %}DSGBase – Profile{% endblock %}
+{% block extra_css %}
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='header.css') }}"
@@ -12,32 +12,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='Profile-css/style.css') }}"
     />
-  </head>
-  <body>
-    <header>
-      <div class="logo-text">
-        <div class="text-position">
-          <h1>DSGBase</h1>
-        </div>
-      </div>
-      <div class="location">
-        <h1>Profile</h1>
-      </div>
-      <div class="menu-toggle" onclick="toggleNav()">☰</div>
-    </header>
-
-    <div class="sideNav">
-      <nav class="nav-1">
-        <ul>
-          <li><a href="/description">Description</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/">Base</a></li>
-          <li class="nav-1-activate"><a href="/profile">Profile</a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <main>
+    {% endblock %}
+{% block location %}Profile{% endblock %}
+{% block content %}
+>
       <div class="main-div">
         <div class="user-header">
           <div class="profile-image">
@@ -133,10 +111,6 @@
           </form>
         </div>
       </div>
-    </main>
-
-    <script src="{{ url_for('static', filename='header-javascript.js') }}"></script>
-
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const toggleBtn = document.getElementById("toggleEdit");
@@ -183,5 +157,8 @@
         });
       });
     </script>
-  </body>
-</html>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

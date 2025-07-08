@@ -261,7 +261,6 @@ main {
   background-color: #9d0ec1;
   transform: scale(1.05);
 }
-/* Edit Profile Form */
 .edit-profile-wrapper label {
   display: block;
   margin-bottom: 6px;
@@ -284,14 +283,12 @@ main {
   transition: border 0.2s;
 }
 
-/* Focus state for inputs */
 .edit-profile-wrapper input[type="text"]:focus,
 .edit-profile-wrapper select:focus {
   outline: none;
   border: 1px solid #be14ec;
 }
 
-/* Button styles */
 .edit-profile-wrapper button {
   margin-top: 20px;
   background-color: #be14ec;

@@ -50,7 +50,7 @@ with app.app_context():
             db.session.rollback()
 
 if __name__ == "__main__":
-    if platform.system() == "Windows":
-        os.system(f'netsh advfirewall firewall add rule name="Python Flask App" dir=in action=allow protocol=TCP localport=5000')
+    # if platform.system() == "Windows":
+    #     os.system(f'netsh advfirewall firewall add rule name="Python Flask App" dir=in action=allow protocol=TCP localport=5000')
     
-    app.run(debug=True, host="0.0.0.0", port=8000)
+    app.run(debug=True)

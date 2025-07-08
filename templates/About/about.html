@@ -1,106 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DSGBase</title>
-    <link rel="stylesheet" href="../../static/About-css/styles.css" />
-    <link rel="stylesheet" href="../../static/header.css" />
-  </head>
-  <body>
-    <header>
-      <div class="logo-text">
-        <div class="text-position"><h1>DSGBase</h1></div>
-      </div>
-      <div class="location">
-        <h1>About</h1>
-      </div>
-      <div class="menu-toggle" onclick="toggleNav()">☰</div>
-    </header>
-    <div class="sideNav">
-      <nav class="nav-1">
-        <ul>
-          <li>
-            <a href="/description">Description</a>
-          </li>
-          <li class="nav-1-activate">
-            <a href="/about">About</a>
-          </li>
-          <li>
-            <a href="/">Base</a>
-          </li>
-          <li>
-            <a
-              href="/profile"
-              >Profile</a
-            >
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <main>
-      <div class="main-div">
-        <section class="about-section">
-          <h2>What is DSGBase?</h2>
-          <p>
-            DSGBase is a modern web-based system for managing personal identity
-            data — such as full name, region, and ID number — in a clear and
-            organized way. It offers a responsive and easy-to-use interface that
-            works directly in the browser.
-          </p>
-        </section>
+{% extends "base.html" %} {% set active_page = 'about' %} {% block title %}Base
+- DSGBase{% endblock %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='About-css/styles.css') }}"
+/>
+{% endblock %} {% block location %}Base{% endblock %} {% block content %}
+<div class="main-div">
+  <section class="about-section">
+    <h2>What is DSGBase?</h2>
+    <p>
+      DSGBase is a modern web-based system for managing personal identity data —
+      such as full name, region, and ID number — in a clear and organized way.
+      It offers a responsive and easy-to-use interface that works directly in
+      the browser.
+    </p>
+  </section>
 
-        <section class="about-section">
-          <h2>How it Works</h2>
-          <p>
-            DSGBase allows users to add, view, and organize personal information
-            through core sections like <strong>Description</strong>,
-            <strong>Base</strong>, and <strong>profile</strong>. Each entry
-            includes searchable attributes, making your data easily accessible
-            and manageable online.
-          </p>
-        </section>
+  <section class="about-section">
+    <h2>How it Works</h2>
+    <p>
+      DSGBase allows users to add, view, and organize personal information
+      through core sections like <strong>Description</strong>,
+      <strong>Base</strong>, and <strong>profile</strong>. Each entry includes
+      searchable attributes, making your data easily accessible and manageable
+      online.
+    </p>
+  </section>
 
-        <section class="about-section">
-          <h2>Who is it for?</h2>
-          <p>
-            DSGBase is ideal for individuals or small teams looking for a simple
-            way to organize identity-related information. It’s perfect for users
-            who want an online database that’s lightweight, accessible, and
-            intuitive.
-          </p>
-        </section>
+  <section class="about-section">
+    <h2>Who is it for?</h2>
+    <p>
+      DSGBase is ideal for individuals or small teams looking for a simple way
+      to organize identity-related information. It’s perfect for users who want
+      an online database that’s lightweight, accessible, and intuitive.
+    </p>
+  </section>
 
-        <section class="about-section">
-          <h2>Accessibility & Privacy</h2>
-          <p>
-            DSGBase runs in the browser and can store data locally or connect to
-            a server, depending on your setup. While it's not designed for
-            sensitive or encrypted storage, it avoids unnecessary data sharing
-            and encourages responsible use and hosting.
-          </p>
-        </section>
+  <section class="about-section">
+    <h2>Accessibility & Privacy</h2>
+    <p>
+      DSGBase runs in the browser and can store data locally or connect to a
+      server, depending on your setup. While it's not designed for sensitive or
+      encrypted storage, it avoids unnecessary data sharing and encourages
+      responsible use and hosting.
+    </p>
+  </section>
 
-        <section class="about-section">
-          <h2>Technology Stack</h2>
-          <p>
-            DSGBase is built using <strong>JavaScript</strong>,
-            <strong>Python</strong>, and <strong>C</strong>, combining web and
-            low-level technologies to ensure performance, flexibility, and
-            scalability.
-          </p>
-        </section>
+  <section class="about-section">
+    <h2>Technology Stack</h2>
+    <p>
+      DSGBase is built using <strong>JavaScript</strong>,
+      <strong>Python</strong>, and <strong>C</strong>, combining web and
+      low-level technologies to ensure performance, flexibility, and
+      scalability.
+    </p>
+  </section>
 
-        <section class="about-section">
-          <h2>Created By</h2>
-          <p>
-            DSGBase was created by <strong>!!D7FEX</strong> and
-            <strong>Gurjaka</strong> to provide a clean, online-first data
-            management experience for anyone who values simplicity and control.
-          </p>
-        </section>
-      </div>
-    </main>
-  </body>
-  <script src="../../static/header-javascript.js"></script>
-</html>
+  <section class="about-section">
+    <h2>Created By</h2>
+    <p>
+      DSGBase was created by <strong>!!D7FEX</strong> and
+      <strong>Gurjaka</strong> to provide a clean, online-first data management
+      experience for anyone who values simplicity and control.
+    </p>
+  </section>
+</div>
+{% endblock %} {% block extra_js %}
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}
