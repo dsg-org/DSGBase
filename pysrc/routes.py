@@ -52,14 +52,14 @@ def register_routes(app):
     def description():
         return render_template("Description/description.html")
     @app.route("/PageUsers")
-    @login_required
+    @login_required  
     def PageUsers():
-        users = User.query.all()
-        print(users)
-        if not current_user.is_admin():
+        if not current_user.is_admin(): 
+            flash("You don't have permission to view this page.", "danger")
             return redirect(url_for("index"))
-        print("ddd")
-        return render_template("PageUsers/PageUsers.html" ,users=users)
+        
+        users = User.query.all()  # ყველა მომხმარებლის ამოღება
+        return render_template("PageUsers/PageUsers.html", users=users)  # გადაცემულ იქნება users
     @app.route("/PageUser/<int:user_id>")
     @login_required
     def PageUser(user_id):  

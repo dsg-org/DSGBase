@@ -243,3 +243,6 @@
   .hidden {
     display: none;
   }
+  .name-colors{
+    color: white;
+  }
