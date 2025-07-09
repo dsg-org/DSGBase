@@ -8,6 +8,8 @@ from flask import flash
 from pysrc.ext import db
 from failisGza import failisGza
 from pysrc.models import User
+from datetime import datetime 
+
 
 process_lock = threading.Lock()
 
@@ -75,14 +77,25 @@ def register_routes(app):
         if token != "Bearer 12345":
             return {"error": "Unauthorized"}, 401
     
+        if not current_user.is_admin():
+            now = datetime.utcnow()
+            if current_user.search_last_reset is None or current_user.search_last_reset.date() < now.date():
+                current_user.search_count = 0
+                current_user.search_last_reset = now
+                db.session.commit()
+    
+            if current_user.search_count >= 5:
+                return {"error": "Daily limit exceeded."}, 429
+    
+            current_user.search_count += 1
+            db.session.commit()
+    
         if not process_lock.acquire(blocking=False):
             return {"error": "Search already running"}, 429
     
         data = request.json or {}
         binary_path = os.path.join(failisGza(), "main")
         data_path = os.path.join(failisGza(), "src", "output.bin")
-
-
     
         args = [binary_path, "-f", data_path]
         if "name" in data:
@@ -123,6 +136,7 @@ def register_routes(app):
     
         finally:
             process_lock.release()
+    
     @app.route("/api/summary", methods=["GET"])
     @login_required
     def get_summary():
