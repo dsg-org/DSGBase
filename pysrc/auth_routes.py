@@ -22,8 +22,7 @@ def login():
             return redirect(url_for("index"))
 
         flash("Invalid credentials", "danger")
-
-    return render_template("base.html", show_login_overlay=True)
+    return render_template("base.html", show_login_overlay=True )
 
 
 @auth.route("/register", methods=["GET", "POST"])

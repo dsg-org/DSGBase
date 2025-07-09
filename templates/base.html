@@ -44,16 +44,21 @@
           >
             <a href="/profile">Profile</a>
           </li>
+          {% if current_user.is_authenticated and current_user.is_admin() %}
           <li
             class="{% if active_page == 'PageUsers' %}nav-1-activate{% endif %}"
           >
             <a href="/PageUsers">Users</a>
           </li>
+          {% endif %}
         </ul>
       </nav>
       <div class="tbc-logo-div">
-      <div class="tbcLogo"><img src="../static/img/tbcLogo.png" alt="" /></div>
-    </div></div>
+        <div class="tbcLogo">
+          <img src="../static/img/tbcLogo.png" alt="" />
+        </div>
+      </div>
+    </div>
 
     <main>{% block content %}{% endblock %}</main>
 

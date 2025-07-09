@@ -16,7 +16,7 @@
            alt="{{ user.username }}'s profile picture"
            id="profileImage"/>
     </div>
-    <div>
+    <div class="name-colors">
       <h2>{{ user.first_name }} {{ user.last_name }}</h2>
       <p>@{{ user.username }}</p>
       <p>Member since {{ user.created_at.strftime('%B %Y') }}</p>
