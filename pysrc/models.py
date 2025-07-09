@@ -22,6 +22,10 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     last_login = db.Column(db.DateTime)
 
+    search_count = db.Column(db.Integer, default=0)
+    search_last_reset = db.Column(db.DateTime, default=datetime.utcnow)
+
+
     def is_admin(self):
         return self.role == "admin"
 
