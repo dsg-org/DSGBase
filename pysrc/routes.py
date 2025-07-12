@@ -9,6 +9,8 @@ from pysrc.ext import db
 from failisGza import failisGza
 from pysrc.models import User
 from datetime import datetime 
+from pysrc.forms import LoginForm, RegisterForm
+
 
 
 process_lock = threading.Lock()
@@ -35,8 +37,14 @@ def register_routes(app):
 
     @app.route("/")
     def index():
+        login_form = LoginForm()
+        register_form = RegisterForm()
+        
         return render_template(
-            "index.html", show_login_overlay=not current_user.is_authenticated
+            "index.html",
+            login_form=login_form,
+            register_form=register_form,
+            show_login_overlay=not current_user.is_authenticated
         )
 
     @app.route("/about")
@@ -60,8 +68,8 @@ def register_routes(app):
             flash("You don't have permission to view this page.", "danger")
             return redirect(url_for("index"))
         
-        users = User.query.all()  # ყველა მომხმარებლის ამოღება
-        return render_template("PageUsers/PageUsers.html", users=users)  # გადაცემულ იქნება users
+        users = User.query.all()  
+        return render_template("PageUsers/PageUsers.html", users=users)  
     @app.route("/PageUser/<int:user_id>")
     @login_required
     def PageUser(user_id):  

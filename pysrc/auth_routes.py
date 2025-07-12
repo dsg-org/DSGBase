@@ -3,41 +3,55 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 from pysrc.models import User
 from pysrc.ext import db
+from .forms import LoginForm, RegisterForm
 
 auth = Blueprint("auth", __name__, template_folder="templates")
 
 
-@auth.route("/login", methods=["GET", "POST"])
+@auth.route("/login", methods=["GET", "POST"]) 
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
 
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        user = User.query.filter_by(username=username).first()
+    login_form = LoginForm()
+    register_form = RegisterForm() 
 
-        if user and check_password_hash(user.password, password):
+    if login_form.validate_on_submit():
+        user = User.query.filter_by(username=login_form.username.data).first()
+        if user and check_password_hash(user.password, login_form.password.data):
             login_user(user)
             return redirect(url_for("index"))
-
         flash("Invalid credentials", "danger")
-    return render_template("base.html", show_login_overlay=True )
+
+    return render_template(
+        "base.html",
+        login_form=login_form,
+        register_form=register_form,
+        show_login_overlay=True
+    )
 
 
 @auth.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        first_name = request.form["first_name"]
-        last_name = request.form["last_name"]
-        email = request.form["email"]
-        username = request.form["username"]
-        password = request.form["password"]
-        confirm_password = request.form["confirm_password"]
+    register_form = RegisterForm()
+    login_form = LoginForm() 
+
+    if register_form.validate_on_submit(): 
+        first_name = register_form.first_name.data
+        last_name = register_form.last_name.data
+        email = register_form.email.data
+        username = register_form.username.data
+        password = register_form.password.data
+        confirm_password = register_form.confirm_password.data
 
         if password != confirm_password:
             flash("Passwords do not match.", "error")
-            return render_template("base.html", show_login_overlay=True)
+            return render_template(
+                "base.html",
+                login_form=login_form,
+                register_form=register_form,
+                show_register_overlay=True
+            )
 
         existing_user = User.query.filter(
             (User.username == username) | (User.email == email)
@@ -45,7 +59,12 @@ def register():
 
         if existing_user:
             flash("Username or email already exists!", "error")
-            return render_template("base.html", show_login_overlay=True)
+            return render_template(
+                "base.html",
+                login_form=login_form,
+                register_form=register_form,
+                show_register_overlay=True
+            )
 
         hashed_password = generate_password_hash(password)
 
@@ -60,9 +79,14 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash("Registration successful! Please log in.", "success")
-        return render_template("base.html", show_login_overlay=True)
+        return redirect(url_for("auth.login"))
 
-    return render_template("base.html", show_login_overlay=True)
+    return render_template(
+        "base.html",
+        login_form=login_form,
+        register_form=register_form,
+        show_register_overlay=True
+    )
 
 
 @auth.route("/logout")
