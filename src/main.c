@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "file_handling.h"
 #include "user_handling.h"
@@ -17,7 +18,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "  -n <name>         Search by name\n");
         fprintf(stderr, "  -s <surname>      Search by surname\n");
         fprintf(stderr, "  -i <id>           Search by ID\n");
-        fprintf(stderr, "  -r <region>       Search by region\n");
+        fprintf(stderr, "  -r <district>     Search by district\n");
         fprintf(stderr, "  -p                \n");
 
         return EXIT_FAILURE;
