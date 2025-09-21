@@ -53,4 +53,4 @@ if __name__ == "__main__":
     # if platform.system() == "Windows":
     #     os.system(f'netsh advfirewall firewall add rule name="Python Flask App" dir=in action=allow protocol=TCP localport=5000')
     
-    app.run(debug=True)
+     app.run(host="0.0.0.0", port=5000, debug=True)
