@@ -155,19 +155,3 @@ main {
   flex-direction: column;
   height: 100vh;
 }
-
-.tbc-logo-div {
-  margin-top: auto; 
-  text-align: center;
-  padding: 20px 26px 0px 0px;
-; 
-  z-index: 200;
-  height: 150px;
-  
-}
-.tbcLogo{
- margin-top: auto; 
-  height: 20px;}
-.tbcLogo img {
-  height: 100%;
-}

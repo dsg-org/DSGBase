@@ -6,7 +6,7 @@ import json
 import threading
 from flask import flash
 from pysrc.ext import db
-from failisGza import failisGza
+from folderRoad import folderRoad
 from pysrc.models import User
 from datetime import datetime 
 from pysrc.forms import LoginForm, RegisterForm
@@ -102,8 +102,8 @@ def register_routes(app):
             return {"error": "Search already running"}, 429
     
         data = request.json or {}
-        binary_path = os.path.join(failisGza(), "main")
-        data_path = os.path.join(failisGza(), "src", "output.bin")
+        binary_path = os.path.join(folderRoad(), "main")
+        data_path = os.path.join(folderRoad(), "src", "output.bin")
     
         args = [binary_path, "-f", data_path]
         if "name" in data:
