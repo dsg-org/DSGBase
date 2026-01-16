@@ -1,9 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import login_required, current_user
-from werkzeug.utils import secure_filename
 import os
+
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
+from werkzeug.utils import secure_filename
+
 from pysrc.ext import db
-from pysrc.models import User 
+from pysrc.models import User
 
 profile_bp = Blueprint("profile", __name__, template_folder="templates")
 
@@ -15,14 +17,14 @@ UPLOAD_FOLDER = "static/images"
 def profile():
     if request.method == "POST":
         nickname = request.form.get("nickname")
-        region = request.form.get("region")
+        district = request.form.get("district")
         img_file = request.files.get("img")
 
         if nickname:
             current_user.nickname = nickname.strip()
 
-        if region:
-            current_user.region = region.strip()
+        if district:
+            current_user.district = district.strip()
 
         if img_file and img_file.filename:
             filename = secure_filename(img_file.filename)
@@ -49,7 +51,7 @@ def update_user_by_admin(user_id):
     user.first_name = request.form.get("first_name", "").strip()
     user.last_name = request.form.get("last_name", "").strip()
     user.email = request.form.get("email", "").strip()
-    user.region = request.form.get("region", "").strip()
+    user.district = request.form.get("district", "").strip()
 
     if current_user.is_admin():
         user.role = request.form.get("role", user.role)

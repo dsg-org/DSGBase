@@ -55,7 +55,7 @@
               <li><strong>First Name:</strong> {{ user.first_name or '—' }}</li>
               <li><strong>Last Name:</strong> {{ user.last_name or '—' }}</li>
               <li><strong>Email:</strong> {{ user.email }}</li>
-              <li><strong>Region:</strong> {{ user.region or '—' }}</li>
+              <li><strong>Region:</strong> {{ user.district or '—' }}</li>
             </ul>
           </div>
         </div>
@@ -75,11 +75,11 @@
               value="{{ user.nickname or '' }}"
             />
 
-            <label for="region">Select Region:</label>
-            <select name="region" id="region">
+            <label for="district">Select Region:</label>
+            <select name="district" id="district">
               <option value="">-- Select --</option>
               {% for r in ['Tbilisi', 'Kutaisi', 'Batumi', 'Zugdidi', 'Rustavi',
-              'Other'] %} {% if user.region == r %}
+              'Other'] %} {% if user.district == r %}
               <option value="{{ r }}" selected>{{ r }}</option>
               {% else %}
               <option value="{{ r }}">{{ r }}</option>
@@ -118,7 +118,7 @@
         const imgInput = document.getElementById("img");
         const preview = document.querySelector(".image-preview");
         const nicknameInput = document.getElementById("nickname");
-        const regionSelect = document.getElementById("region");
+        const districtSelect = document.getElementById("district");
 
         toggleBtn.addEventListener("click", () => {
           editSection.classList.toggle("hidden");
@@ -147,7 +147,7 @@
           }
         });
 
-        [nicknameInput, regionSelect].forEach((input) => {
+        [nicknameInput, districtSelect].forEach((input) => {
           input.addEventListener("focus", () =>
             input.classList.add("active-input")
           );

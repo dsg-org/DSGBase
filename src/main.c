@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "file_handling.h"
+#include "string.h"
 #include "user_handling.h"
 
 #define MAX_STR_LEN 64
@@ -32,6 +33,8 @@ int main(int argc, char* argv[])
     bool pflag = false;
     bool rflag = false;
 
+    char* fname = NULL;
+
     User* s;
     PackedUser* p;
     s = calloc(1, sizeof(User));
@@ -58,7 +61,7 @@ int main(int argc, char* argv[])
                     }
                     break;
                 case 'f':
-                    if (s->fname)
+                    if (fname)
                     {
                         fprintf(stderr, "Can not accept multiple file names.\n");
                         free(s);
@@ -68,11 +71,11 @@ int main(int argc, char* argv[])
                     if (i < argc)
                     {
                         fflag = true;
-                        s->fname = strdup(argv[i]);
+                        fname = strdup(argv[i]);
                     }
                     break;
                 case 'n':
-                    if (s->name)
+                    if (*s->packed_user.name)
                     {
                         fprintf(stderr, "Can not accept multiple names.\n");
                         free(s);
@@ -82,11 +85,11 @@ int main(int argc, char* argv[])
                     if (i < argc)
                     {
                         nflag = true;
-                        s->name = strdup(argv[i]);
+                        strcpy(s->packed_user.name, argv[i]);
                     }
                     break;
                 case 's':
-                    if (s->surname)
+                    if (*s->packed_user.surname)
                     {
                         fprintf(stderr, "Can not accept multiple surnames.\n");
                         free(s);
@@ -96,7 +99,7 @@ int main(int argc, char* argv[])
                     if (i < argc)
                     {
                         sflag = true;
-                        s->surname = strdup(argv[i]);
+                        strcpy(s->packed_user.surname, argv[i]);
                     }
                     break;
                 case 'i':
@@ -110,7 +113,7 @@ int main(int argc, char* argv[])
                     if (i < argc)
                     {
                         iflag = true;
-                        s->id = strtoll(argv[i], NULL, 10);
+                        s->packed_user.id = strtoll(argv[i], NULL, 10);
                         s->id_set = true;
                     }
                     break;
@@ -119,9 +122,9 @@ int main(int argc, char* argv[])
                     break;
 
                 case 'r':
-                    if (s->region)
+                    if (*s->packed_user.district)
                     {
-                        fprintf(stderr, "Can not accept multiple regions.\n");
+                        fprintf(stderr, "Can not accept multiple districts.\n");
                         free(s);
                         return EXIT_FAILURE;
                     }
@@ -129,7 +132,7 @@ int main(int argc, char* argv[])
                     if (i < argc)
                     {
                         rflag = true;
-                        s->region = strdup(argv[i]);
+                        strcpy(s->packed_user.district, strdup(argv[i]));
                     }
                     break;
                 default:
@@ -150,10 +153,10 @@ int main(int argc, char* argv[])
 
     if (pflag)
     {
-        if (fflag && s->fname)
+        if (fflag && fname)
         {
-            printf("Loading users from binary file: %s\n", s->fname);
-            load_users_from_json(s->fname);
+            printf("Loading users from binary file: %s\n", fname);
+            load_users_from_json(fname);
         }
         print_surname();
         goto cleanup;
@@ -161,10 +164,10 @@ int main(int argc, char* argv[])
 
     if (nflag || sflag || iflag || rflag)
     {
-        if (fflag && s->fname)
+        if (fflag && fname)
         {
-            printf("Loading users from binary file: %s\n", s->fname);
-            load_users_from_json(s->fname);
+            printf("Loading users from binary file: %s\n", fname);
+            load_users_from_json(fname);
         }
         else
         {
@@ -180,17 +183,10 @@ int main(int argc, char* argv[])
     }
 
 cleanup:
-    free(s->fname);
-    free(s->name);
-    free(s->surname);
-    free(s->region);
+    free(fname);
     free(s);
     if (p)
-    {
-        if (p->in)
-            free(p->in);
         free(p);
-    }
 
     cleanup_hash_table();
 

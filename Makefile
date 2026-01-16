@@ -1,8 +1,8 @@
 CC = gcc
 
 # Directories
-SRC_DIR = ./src/csrc
-INC_DIR = ./src/headers
+SRC_DIR = ./src
+INC_DIR = ./src
 MAIN_SRC = ./src/main.c
 
 # Object files

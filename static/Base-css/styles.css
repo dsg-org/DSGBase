@@ -16,7 +16,7 @@
 .search-name,
 .search-lastname,
 .search-id,
-.search-region {
+.search-district {
   margin: 20px 0px 0px 0px;
   width: 100%;
   text-align: center;
@@ -48,7 +48,9 @@ button[type="submit"] {
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease;
   box-shadow: 0 3px 8px rgba(183, 0, 255, 0.3);
 }
 
@@ -108,7 +110,7 @@ button[type="submit"]:hover {
   overflow-y: auto;
   margin-top: 16px;
   width: 100%;
-  padding-left:24px;
+  padding-left: 24px;
 }
 .more {
   width: 100%;

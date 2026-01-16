@@ -1,6 +1,8 @@
-from flask_login import UserMixin
-from pysrc.ext import db
 from datetime import datetime
+
+from flask_login import UserMixin
+
+from pysrc.ext import db
 
 
 class User(db.Model, UserMixin):
@@ -13,7 +15,7 @@ class User(db.Model, UserMixin):
 
     first_name = db.Column(db.String(100), nullable=True)
     last_name = db.Column(db.String(100), nullable=True)
-    region = db.Column(db.String(100), nullable=True)
+    district = db.Column(db.String(100), nullable=True)
     nickname = db.Column(db.String(100), nullable=True)
 
     img = db.Column(db.String(150), default="default_profile.png")
@@ -24,7 +26,6 @@ class User(db.Model, UserMixin):
 
     search_count = db.Column(db.Integer, default=0)
     search_last_reset = db.Column(db.DateTime, default=datetime.utcnow)
-
 
     def is_admin(self):
         return self.role == "admin"

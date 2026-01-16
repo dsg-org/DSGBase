@@ -6,7 +6,7 @@ DSGBase \- convert and query user data in JSON and binary formats
 [\fB-b\fR \fIFILE\fR] [\fB-f\fR \fIFILE\fR] [\fB-i\fR \fIID\fR] [\fB-n\fR \fINAME\fR] [\fB-s\fR \fISURNAME\fR] [\fB-r\fR \fIREGION\fR]
 .SH DESCRIPTION
 .B DSGBase
-is a command-line tool for managing user data from JSON files. It can convert a JSON file to a binary format or search users by name, surname, ID, or region from a binary dataset.
+is a command-line tool for managing user data from JSON files. It can convert a JSON file to a binary format or search users by name, surname, ID, or district from a binary dataset.
 
 The JSON input is expected to use the following keys for user objects:
 .IP \[bu] 2
@@ -43,7 +43,7 @@ Search for users by surname (gvari).
 
 .TP
 .BR -r " " \fIREGION\fR
-Search for users by region (raioni).
+Search for users by district (raioni).
 
 .SH EXAMPLES
 .TP
@@ -57,7 +57,7 @@ Load binary file and search by ID:
 userbin -f output.bin -i 101
 
 .TP
-Load and search by name and region:
+Load and search by name and district:
 .B
 userbin -f output.bin -n Giorgi -r Tbilisi
 

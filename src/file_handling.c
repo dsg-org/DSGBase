@@ -1,22 +1,20 @@
 #include "file_handling.h"
 
-#include <cjson/cJSON.h> // JSON parsing library
+#include <cjson/cJSON.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Copies a string into a fixed-size buffer with trimming and null termination.
+#include "user_handling.h"
+
 void trim_and_copy(char* dest, const char* src)
 {
-    strncpy(dest, src, MAX_STR_LEN - 1); // Copy at most MAX_STR_LEN - 1 chars
-    dest[MAX_STR_LEN - 1] = '\0';        // Ensure null termination
+    strncpy(dest, src, MAX_STR_LEN - 1);
+    dest[MAX_STR_LEN - 1] = '\0';
 }
 
-// Converts a JSON file of users into a binary file.
-// Assumes JSON is an array of objects with fields: "piadi", "saxeli", "gvari", "raioni"
 void convert_to_bin(char* fname)
 {
-    // Open input JSON file
     FILE* in = fopen(fname, "r");
     if (!in)
     {
@@ -29,7 +27,6 @@ void convert_to_bin(char* fname)
     long fsize = ftell(in);
     rewind(in);
 
-    // Allocate buffer and read file content
     char* data = malloc(fsize + 1);
     if (fread(data, 1, fsize, in) != fsize)
     {
@@ -38,21 +35,19 @@ void convert_to_bin(char* fname)
         free(data);
         exit(EXIT_FAILURE);
     }
-    data[fsize] = '\0'; // Null-terminate
+
+    data[fsize] = '\0';
     fclose(in);
 
-    // Parse JSON content
     cJSON* root = cJSON_Parse(data);
     free(data);
 
-    // Validate JSON is an array
     if (!root || !cJSON_IsArray(root))
     {
         fprintf(stderr, "Invalid JSON\n");
         exit(EXIT_FAILURE);
     }
 
-    // Open binary output file
     FILE* out = fopen("src/output.bin", "wb");
     if (!out)
     {
@@ -65,6 +60,19 @@ void convert_to_bin(char* fname)
     cJSON* user = root->child;
     int total = cJSON_GetArraySize(root);
     int i = 0;
+
+    enum user_fields
+    {
+        USER_NAME,
+        USER_SURNAME,
+        USER_ID,
+        DISTRICT,
+        FATHER,
+        FATHER_ID,
+        MOTHER,
+        MOTHER_ID
+    };
+
     while (user)
     {
         if (!cJSON_IsObject(user))
@@ -73,50 +81,55 @@ void convert_to_bin(char* fname)
             continue;
         }
 
-        // Extract fields with Georgian names
-        cJSON* name = cJSON_GetObjectItem(user, "saxeli");   // "name"
-        cJSON* surname = cJSON_GetObjectItem(user, "gvari"); // "surname"
-        cJSON* id = cJSON_GetObjectItem(user, "piadi");      // "ID"
-        cJSON* region = cJSON_GetObjectItem(user, "raioni"); // "region"
+        PackedUser p;
+        memset(&p, 0, sizeof(PackedUser));
 
-        // Skip if any required field is invalid
-        if (!cJSON_IsString(id) || !cJSON_IsString(name) || !cJSON_IsString(surname) || !cJSON_IsString(region))
+        const char* keys[] = {"სახელი",
+                              "გვარი",
+                              "პირადი ნომერი",
+                              "რაიონი",
+                              "მამის სახელი",
+                              "მამის პირადი",
+                              "დედის სახელი",
+                              "დედის პირადი"};
+
+        cJSON* items[8];
+        for (int k = 0; k < 8; k++)
+            items[k] = cJSON_GetObjectItem(user, keys[k]);
+
+        if (cJSON_IsString(items[USER_ID]))
+            p.id = strtoll(items[USER_ID]->valuestring, NULL, 10);
+
+        if (cJSON_IsString(items[FATHER_ID]))
+            p.father_id = strtoll(items[FATHER_ID]->valuestring, NULL, 10);
+
+        if (cJSON_IsString(items[MOTHER_ID]))
+            p.mother_id = strtoll(items[MOTHER_ID]->valuestring, NULL, 10);
+
+        int string_fields[] = {USER_NAME, USER_SURNAME, DISTRICT, FATHER, MOTHER};
+
+        for (int k = 0; k < 5; k++)
         {
-            user = user->next;
-            continue;
+            int field_idx = string_fields[k];
+            if (cJSON_IsString(items[field_idx]))
+            {
+                char* dest = (char*) &p + STRING_OFFSETS[k];
+                trim_and_copy(dest, items[field_idx]->valuestring);
+            }
         }
 
-        // Convert ID to int64
-        int64_t user_id = strtoll(id->valuestring, NULL, 10);
-
-        // Fill PackedUser structure
-        PackedUser p;
-        p.id = user_id;
-        trim_and_copy(p.name, name->valuestring);
-        trim_and_copy(p.surname, surname->valuestring);
-        trim_and_copy(p.region, region->valuestring);
-
-        // Write struct to binary file
         fwrite(&p, sizeof(PackedUser), 1, out);
 
-        // Optional progress info every 1000 users
         if (++i % 1000 == 0)
-            printf("Processed %d users\n", i);
-
-        // Display progress bar more frequently
-        if (i % 100 == 0 || i == total)
             print_progress(i, total);
-
         user = user->next;
     }
 
-    // Cleanup
     fclose(out);
     cJSON_Delete(root);
     printf("Conversion complete.\n");
 }
 
-// Renders a dynamic ASCII progress bar in the terminal
 void print_progress(int current, int total)
 {
     const int bar_width = 50;

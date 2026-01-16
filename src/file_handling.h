@@ -8,11 +8,15 @@
 // Structure to represent a single user in a packed binary format
 typedef struct
 {
-    int64_t id;                // Unique ID for the user
-    char name[MAX_STR_LEN];    // First name
-    char surname[MAX_STR_LEN]; // Last name
-    char region[MAX_STR_LEN];  // Region name
-    char* in;                  // Unused pointer (can be used for source tracking or additional info)
+    int64_t id;
+    char name[MAX_STR_LEN];
+    char surname[MAX_STR_LEN];
+    char district[MAX_STR_LEN];
+    char father[MAX_STR_LEN];
+    int64_t father_id;
+    char mother[MAX_STR_LEN];
+    int64_t mother_id;
+    char* in;
 } PackedUser;
 
 /**

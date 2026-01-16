@@ -2,8 +2,20 @@
 #define USER_HANDLING_H
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <uthash.h>
+
+#include "file_handling.h"
+
+static const size_t STRING_OFFSETS[] = {offsetof(PackedUser, name),
+                                        offsetof(PackedUser, surname),
+                                        offsetof(PackedUser, district),
+                                        offsetof(PackedUser, father),
+                                        offsetof(PackedUser, mother)};
+
+static const size_t ID_OFFSETS[] = {
+    offsetof(PackedUser, id), offsetof(PackedUser, father_id), offsetof(PackedUser, mother_id)};
 
 /**
  * Struct representing a user loaded in memory.
@@ -11,10 +23,7 @@
  */
 typedef struct data
 {
-    int64_t id;        // Unique identifier
-    char* name;        // First name
-    char* surname;     // Last name
-    char* region;      // Region or locality
+    PackedUser user;
     UT_hash_handle hh; // uthash handle for hashing by ID
 } Data;
 
@@ -24,12 +33,8 @@ typedef struct data
  */
 typedef struct user
 {
-    char* fname;   // Optional field name (not used in logic, likely legacy or reserved)
-    char* name;    // Name filter
-    char* surname; // Surname filter
-    char* region;  // Region filter
-    int64_t id;    // ID to filter by
-    bool id_set;   // Whether the ID filter is active
+    PackedUser packed_user;
+    bool id_set; // Whether the ID filter is active
 } User;
 
 /**
@@ -50,10 +55,10 @@ typedef struct SurnameSet
 void load_users_from_json(const char*);
 
 /**
- * Adds a user with given ID, name, surname, and region to the global hash table.
+ * Adds a user with given ID, name, surname, and district to the global hash table.
  * Prevents duplicate IDs. On memory allocation failure, cleans up and exits.
  */
-void add_user(const int64_t id, const char* name, const char* surname, const char* region);
+void add_user(const int64_t* id, const char** user_strings);
 
 /**
  * Searches through all users in the hash table.

@@ -1,24 +1,28 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, logout_user, login_required, current_user
-from pysrc.models import User
+from flask import Blueprint, flash, redirect, render_template, url_for
+from flask_login import current_user, login_required, login_user, logout_user
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from pysrc.ext import db
+from pysrc.models import User
+
 from .forms import LoginForm, RegisterForm
 
 auth = Blueprint("auth", __name__, template_folder="templates")
 
 
-@auth.route("/login", methods=["GET", "POST"]) 
+@auth.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
 
     login_form = LoginForm()
-    register_form = RegisterForm() 
+    register_form = RegisterForm()
 
     if login_form.validate_on_submit():
         user = User.query.filter_by(username=login_form.username.data).first()
-        if user and check_password_hash(user.password, login_form.password.data):
+        if user and check_password_hash(
+            user.password, login_form.password.data
+        ):
             login_user(user)
             return redirect(url_for("index"))
         flash("Invalid credentials", "danger")
@@ -27,16 +31,16 @@ def login():
         "base.html",
         login_form=login_form,
         register_form=register_form,
-        show_login_overlay=True
+        show_login_overlay=True,
     )
 
 
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     register_form = RegisterForm()
-    login_form = LoginForm() 
+    login_form = LoginForm()
 
-    if register_form.validate_on_submit(): 
+    if register_form.validate_on_submit():
         first_name = register_form.first_name.data
         last_name = register_form.last_name.data
         email = register_form.email.data
@@ -50,7 +54,7 @@ def register():
                 "base.html",
                 login_form=login_form,
                 register_form=register_form,
-                show_register_overlay=True
+                show_register_overlay=True,
             )
 
         existing_user = User.query.filter(
@@ -63,7 +67,7 @@ def register():
                 "base.html",
                 login_form=login_form,
                 register_form=register_form,
-                show_register_overlay=True
+                show_register_overlay=True,
             )
 
         hashed_password = generate_password_hash(password)
@@ -85,7 +89,7 @@ def register():
         "base.html",
         login_form=login_form,
         register_form=register_form,
-        show_register_overlay=True
+        show_register_overlay=True,
     )
 
 

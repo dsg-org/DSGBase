@@ -16,7 +16,7 @@
         <h2>Total Customers</h2>
         <h3 id="totalCustomers">Loading...</h3>
         <p class="subtitle">Region Distribution</p>
-        <ul id="regionList"></ul>
+        <ul id="districtList"></ul>
       </div>
 
       <div class="highlight-box">
@@ -56,15 +56,15 @@
       document.getElementById("totalRevenue").textContent = "$" + data.total_revenue.toFixed(2);
       document.getElementById("totalTransactions").textContent = data.total_transactions;
 
-      const regionList = document.getElementById("regionList");
-      regionList.innerHTML = "";
-      for (const [region, count] of Object.entries(data.region_distribution)) {
+      const districtList = document.getElementById("districtList");
+      districtList.innerHTML = "";
+      for (const [district, count] of Object.entries(data.district_distribution)) {
         const li = document.createElement("li");
-        li.textContent = `${region}: ${count}`;
-        regionList.appendChild(li);
+        li.textContent = `${district}: ${count}`;
+        districtList.appendChild(li);
       }
 
-      document.getElementById("topRegion").textContent = data.top_region;
+      document.getElementById("topRegion").textContent = data.top_district;
       document.getElementById("topSurname").textContent = data.top_surname;
       document.getElementById("topName").textContent = data.top_name;
 

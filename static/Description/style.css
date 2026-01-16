@@ -1,13 +1,9 @@
-
-
 .div-main {
   padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
-
-
 
 .menu-toggle {
   display: none;
@@ -17,11 +13,6 @@
   padding: 0 20px;
 }
 
-
-
-
-
-
 .div-overview-flex {
   display: flex;
   flex-wrap: wrap;
@@ -29,7 +20,9 @@
   justify-content: center;
 }
 
-.overview, .highlight-box, .stat-card {
+.overview,
+.highlight-box,
+.stat-card {
   background: #1a1a1a;
   color: #fff;
   padding: 1.5rem;
@@ -93,7 +86,8 @@ ul li {
   display: inline-block;
   width: 16px;
   height: 16px;
-  background: url("https://cdn-icons-png.flaticon.com/512/684/684908.png") no-repeat center;
+  background: url("https://cdn-icons-png.flaticon.com/512/684/684908.png")
+    no-repeat center;
   background-size: contain;
   margin-right: 10px;
   filter: invert(1);
@@ -121,7 +115,6 @@ ul li {
   .menu-toggle {
     display: block;
   }
-
 
   .sideNav.active {
     transform: translateX(0);

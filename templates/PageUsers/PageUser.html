@@ -41,7 +41,7 @@
         <li><strong>First Name:</strong> {{ user.first_name or '—' }}</li>
         <li><strong>Last Name:</strong> {{ user.last_name or '—' }}</li>
         <li><strong>Email:</strong> {{ user.email }}</li>
-        <li><strong>Region:</strong> {{ user.region or '—' }}</li>
+        <li><strong>Region:</strong> {{ user.district or '—' }}</li>
       </ul>
     </div>
   </div>
@@ -64,11 +64,11 @@
       <label for="email">Email</label>
       <input type="email" name="email" id="email" value="{{ user.email }}" required>
       
-      <label for="region">Region</label>
-      <select name="region" id="region">
-        <option value="">Select region</option>
-        {% for region in ['Tbilisi', 'Kutaisi', 'Batumi', 'Zugdidi', 'Rustavi', 'Other'] %}
-          <option value="{{ region }}" {% if user.region == region %}selected{% endif %}>{{ region }}</option>
+      <label for="district">Region</label>
+      <select name="district" id="district">
+        <option value="">Select district</option>
+        {% for district in ['Tbilisi', 'Kutaisi', 'Batumi', 'Zugdidi', 'Rustavi', 'Other'] %}
+          <option value="{{ district }}" {% if user.district == district %}selected{% endif %}>{{ district }}</option>
         {% endfor %}
       </select>
        <label for="role">Role</label>

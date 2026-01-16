@@ -2,9 +2,10 @@ main {
   display: flex;
   justify-content: center;
 }
-a{
-list-style-type: none;
-text-decoration: none;}
+a {
+  list-style-type: none;
+  text-decoration: none;
+}
 .main-div {
   padding: 20px 0px 0px 0px;
 }
@@ -19,7 +20,7 @@ text-decoration: none;}
   justify-content: space-between;
 }
 .user-div:hover {
-  transform: scale(1.06); 
+  transform: scale(1.06);
   transition: transform 0.5s ease;
 }
 .div-avatar {
@@ -33,39 +34,38 @@ text-decoration: none;}
   border-radius: 10px;
   box-shadow: 0px 0px 10px white;
 }
-.div-left{
-    align-items:center;
-    display: flex;
-    /* background-color: red; */
+.div-left {
+  align-items: center;
+  display: flex;
+  /* background-color: red; */
 }
-.div-username{
-    color: white;
-    font-size: 1.3rem;
-    margin: 0px 0px 0px 20px;
+.div-username {
+  color: white;
+  font-size: 1.3rem;
+  margin: 0px 0px 0px 20px;
 }
-.div-register-time{
-    color: rgb(255, 255, 255);
+.div-register-time {
+  color: rgb(255, 255, 255);
 }
-.div-role{
-    color: white;
-    width: 80px;
-    /* background-color: red; */
+.div-role {
+  color: white;
+  width: 80px;
+  /* background-color: red; */
 }
-.line{
-    width: 2px;
-    background-color: rgb(0, 0, 0);
+.line {
+  width: 2px;
+  background-color: rgb(0, 0, 0);
 }
-.div-right{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    margin: 0px 20px 0px 0px ;
+.div-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin: 0px 20px 0px 0px;
 }
 
-@media screen and (max-width:930px) {
-    .div-register-time{
-        display: none;
-    }
-    
+@media screen and (max-width: 930px) {
+  .div-register-time {
+    display: none;
+  }
 }

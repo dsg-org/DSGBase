@@ -25,6 +25,7 @@
             flask
             flask-sqlalchemy
             flask-login
+            flask-wtf
           ];
       in {
         default =
@@ -34,12 +35,15 @@
               (python3.withPackages python-deps)
               black
               uthash
-              clang-tools
               cjson
               bear
+              compiledb
             ];
           };
       }
     );
+    shellHook = ''
+      export PYTHONPATH=$(readlink -f .):$PYTHONPATH
+    '';
   };
 }
