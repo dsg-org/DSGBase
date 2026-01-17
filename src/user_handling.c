@@ -37,7 +37,7 @@ void load_users_from_json(const char* filename)
             ids[i] = *(int64_t*) ((char*) &p + ID_OFFSETS[i]);
         ids[id_count] = -1;
 
-        add_user(ids, str_attrs);
+        add_user(ids, str_attrs, p.gender);
         count++;
     }
 
@@ -45,7 +45,7 @@ void load_users_from_json(const char* filename)
     fclose(fp);
 }
 
-void add_user(const int64_t* ids, const char** user_strings)
+void add_user(const int64_t* ids, const char** user_strings, int gender)
 {
     Data* s;
 
@@ -61,6 +61,7 @@ void add_user(const int64_t* ids, const char** user_strings)
     }
 
     memset(s, 0, sizeof(Data));
+    s->user.gender = gender;
 
     int id_count = sizeof(ID_OFFSETS) / sizeof(ID_OFFSETS[0]);
 
@@ -138,10 +139,12 @@ void search_users(const User* filters)
             printf("    \"name\": \"%s\",\n", current->user.name);
             printf("    \"surname\": \"%s\",\n", current->user.surname);
             printf("    \"district\": \"%s\", \n", current->user.district);
+            printf("    \"street\": \"%s\", \n", current->user.street);
             printf("    \"father\": \"%s\", \n", current->user.father);
-            printf("    \"father_id\": \"%ld\", \n", current->user.father_id);
-            printf("    \"mother\": \"%s\", \n", current->user.mother);
-            printf("    \"mother_id\": \"%ld\" \n", current->user.mother_id);
+            printf("    \"date_of_birth\": \"%s\", \n", current->user.date_of_birth);
+            printf("    \"date_of_registration\": \"%s\", \n", current->user.date_of_registration);
+            printf("    \"license_id\": \"%ld\", \n", current->user.license_id);
+            printf("    \"gender\": \"%d\" \n", current->user.gender);
             printf("  }");
             found_count++;
         }

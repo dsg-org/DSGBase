@@ -34,6 +34,7 @@ int main(int argc, char* argv[])
     bool rflag = false;
 
     char* fname = NULL;
+    char* bname = NULL;
 
     User* s;
     PackedUser* p;
@@ -47,7 +48,7 @@ int main(int argc, char* argv[])
             switch (argv[i][1])
             {
                 case 'b':
-                    if (p->in)
+                    if (bname)
                     {
                         fprintf(stderr, "Can not convert multiple files to binary.\n");
                         free(s);
@@ -57,7 +58,7 @@ int main(int argc, char* argv[])
                     if (i < argc)
                     {
                         bflag = true;
-                        p->in = strdup(argv[i]);
+                        bname = strdup(argv[i]);
                     }
                     break;
                 case 'f':
@@ -146,7 +147,7 @@ int main(int argc, char* argv[])
     if (bflag)
     {
         puts("Converting JSON to Binary.");
-        convert_to_bin(p->in);
+        convert_to_bin(bname);
         puts("Successfully converted JSON to Binary.\n");
         goto cleanup;
     }
@@ -155,7 +156,7 @@ int main(int argc, char* argv[])
     {
         if (fflag && fname)
         {
-            printf("Loading users from binary file: %s\n", fname);
+            fprintf(stderr, "Loading users from binary file: %s\n", fname);
             load_users_from_json(fname);
         }
         print_surname();
@@ -166,7 +167,7 @@ int main(int argc, char* argv[])
     {
         if (fflag && fname)
         {
-            printf("Loading users from binary file: %s\n", fname);
+            fprintf(stderr, "Loading users from binary file: %s\n", fname);
             load_users_from_json(fname);
         }
         else
@@ -175,7 +176,7 @@ int main(int argc, char* argv[])
             goto cleanup;
         }
 
-        puts("Performing filtered search...\n");
+        fprintf(stderr, "Performing filtered search...\n");
         puts("[");
         search_users(s);
         puts("\n]");

@@ -74,34 +74,33 @@ form.addEventListener("submit", async function (e) {
       card.classList.add("result-card");
 
       const fields = [
+        ["ID", user.id],
         ["Name", user.name],
         ["Surname", user.surname],
-        ["ID", user.id],
         [
-          "Region",
+          "District",
           user.district && user.district !== "ნან" ? user.district : null,
         ],
-        ["Father", user.father ? user.father : null],
+        ["Father", user.father || null],
+        ["DTB", user.date_of_birth || null],
+        ["DTR", user.date_of_registration || null],
+        ["License ID", user.license_id || null],
+        // Use a strict check for 0/1 here
         [
-          "Father_ID",
-          user.father_id && user.father_id !== "0" && user.father_id !== 0
-            ? user.father_id
-            : null,
-        ],
-        ["Mother", user.mother ? user.mother : null],
-        [
-          "Mother_ID",
-          user.mother_id && user.mother_id !== "0" && user.mother_id !== 0
-            ? user.mother_id
-            : null,
+          "Gender",
+          user.gender === 1 || user.gender === "1" ? "Male" : "Female",
         ],
       ];
 
       fields.forEach(([label, value]) => {
-        if (value && value.toString().trim() !== "" && value !== "0") {
+        // STRICT CHECK: value 0 is valid, null/undefined/empty string are not
+        if (
+          value !== null &&
+          value !== undefined &&
+          value.toString().trim() !== ""
+        ) {
           const row = document.createElement("div");
           row.className = "field-row";
-
           row.innerHTML = `<strong>${label}:</strong> <span>${value}</span>`;
           card.appendChild(row);
         }

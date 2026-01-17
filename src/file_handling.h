@@ -1,6 +1,7 @@
 #ifndef FILE_HANDLING_H
 #define FILE_HANDLING_H
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 #define MAX_STR_LEN 64 // Maximum length for string fields in PackedUser
@@ -9,14 +10,15 @@
 typedef struct
 {
     int64_t id;
+    int64_t license_id;
+    int8_t gender; // 1 = male | 2 = female
     char name[MAX_STR_LEN];
     char surname[MAX_STR_LEN];
     char district[MAX_STR_LEN];
+    char street[MAX_STR_LEN];
     char father[MAX_STR_LEN];
-    int64_t father_id;
-    char mother[MAX_STR_LEN];
-    int64_t mother_id;
-    char* in;
+    char date_of_birth[MAX_STR_LEN];
+    char date_of_registration[MAX_STR_LEN];
 } PackedUser;
 
 /**

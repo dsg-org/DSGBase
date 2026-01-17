@@ -68,6 +68,14 @@ KEY_MAP = {
     "saxeli": "სახელი",
     "gvari": "გვარი",
     "piadi": "პირადი ნომერი",
+    "piadi #": "პირადი ნომერი",
+    "sqesi": "სქესი",
+    "dab weli": "დაბადების თარიღი",
+    "reg TariRi": "რეგისტრაციის თარიღი",
+    "mocmobis #": "მოწმობის ნომერი",
+    "quCa": "ქუჩა",
+    "REGMDAT": "რეგისტრაციის ადგილი",
+    "mamis saxeli": "მამის სახელი",
     "mamisSaxeli": "მამის სახელი",
     "mamisPiradi": "მამის პირადი",
     "dedisSaxeli": "დედის სახელი",
@@ -108,4 +116,4 @@ def process_huge_file(input_path, output_path):
 
 
 if __name__ == "__main__":
-    process_huge_file("output.json", "data_georgian.json")
+    process_huge_file("merged_database.json", "data_georgian.json")

@@ -10,12 +10,15 @@
 
 static const size_t STRING_OFFSETS[] = {offsetof(PackedUser, name),
                                         offsetof(PackedUser, surname),
-                                        offsetof(PackedUser, district),
+                                        offsetof(PackedUser, street),
                                         offsetof(PackedUser, father),
-                                        offsetof(PackedUser, mother)};
+                                        offsetof(PackedUser, date_of_birth),
+                                        offsetof(PackedUser, date_of_registration),
+                                        offsetof(PackedUser, district),
+                                        };
 
 static const size_t ID_OFFSETS[] = {
-    offsetof(PackedUser, id), offsetof(PackedUser, father_id), offsetof(PackedUser, mother_id)};
+    offsetof(PackedUser, id), offsetof(PackedUser, license_id)};
 
 /**
  * Struct representing a user loaded in memory.
@@ -58,7 +61,7 @@ void load_users_from_json(const char*);
  * Adds a user with given ID, name, surname, and district to the global hash table.
  * Prevents duplicate IDs. On memory allocation failure, cleans up and exits.
  */
-void add_user(const int64_t* id, const char** user_strings);
+void add_user(const int64_t* id, const char** user_strings, int gender);
 
 /**
  * Searches through all users in the hash table.
